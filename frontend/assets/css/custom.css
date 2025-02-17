@@ -1,0 +1,37 @@
+.divider:after,
+.divider:before {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #eee;
+}
+.btn-block {
+    display: block;
+    margin: 0 auto;
+    max-width: 300px; /* Adjust width as needed */
+}
+em.error {
+    color: grey !important;
+    font-style: normal;
+    font-size: 14px;
+    display: block;
+}
+.form-label {
+    color: #0a53be;
+}
+
+.form-control-lg {
+    /*font-size: 1.5rem; !* Increase font size inside the input *!*/
+    padding: 1rem; /* Increase padding for a bigger input field */
+    height: 50px; /* Increase height of the input field */
+}
+@media (max-width: 990px) {
+    img {
+        display: none;
+    }
+}
+
+.col-md-7 {
+    border: 2px solid #6ea8fe;
+    padding: 30px;
+}
