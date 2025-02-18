@@ -68,3 +68,20 @@
         </div>
     </div>
 </section>
+
+<script>
+    FormValidation.validate("#signup-form", {}, function (data) {
+        // Utils.block_ui("#add-patient-modal");
+
+        RestClient.post(
+            "users/add",
+            data,
+            function (response) {
+                toastr.success("You have successfully added the user.");
+            },
+            function (xhr) {
+                toastr.error(xhr);
+            }
+        );
+    });
+</script>
