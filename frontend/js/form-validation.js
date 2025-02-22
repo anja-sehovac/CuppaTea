@@ -52,13 +52,16 @@ var FormValidation = {
         return result;
     },
 
-    validate: function (form_selector, form_rules, form_submit_handler) {
+    validate: function (form_selector, form_rules, form_messages, form_submit_handler) {
         var form_object = $(form_selector);
         var error = $(".alert-danger", form_object);
         var success = $(".alert-success", form_object);
 
         form_object.validate({
+            focusCleanup: true,
+            errorElement: "em",
             rules: form_rules,
+            form_messages, form_messages,
             submitHandler: function (form, event) {
                 event.preventDefault();
                 success.show();
