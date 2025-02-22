@@ -14,8 +14,8 @@
                     </div>
 
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <input type="text" id="fullname" name = "fullname" class="form-control form-control-lg" />
-                        <label class="form-label" for="fullname">Full name</label>
+                        <input type="text" id="name" name = "name" class="form-control form-control-lg" />
+                        <label class="form-label" for="name">Full name</label>
                     </div>
 
                     <div class="row mb-4">
@@ -34,22 +34,22 @@
                         <!-- Date of Birth Input -->
                         <div class="col-md-6">
                             <div data-mdb-input-init class="form-outline">
-                                <input type="date" id="birthday"  name ="birthday" class="form-control form-control-lg" />
-                                <label class="form-label" for="birthday">Date of birth</label>
+                                <input type="date" id="date_of_birth"  name ="date_of_birth" class="form-control form-control-lg" />
+                                <label class="form-label" for="date_of_birth">Date of birth</label>
                             </div>
                         </div>
                     </div>
 
                     <!-- Email input -->
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <input type="email" id="signup_email" name = "signup_email" class="form-control form-control-lg" />
-                        <label class="form-label" for="signup_email">Email address</label>
+                        <input type="email" id="email" name = "email" class="form-control form-control-lg" />
+                        <label class="form-label" for="email">Email address</label>
                     </div>
 
                     <!-- Password input -->
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <input type="password" id="password_signup" name = "password_signup" class="form-control form-control-lg" />
-                        <label class="form-label" for="password_signup">Password</label>
+                        <input type="password" id="password" name = "password" class="form-control form-control-lg" />
+                        <label class="form-label" for="password">Password</label>
                     </div>
 
                     <div data-mdb-input-init class="form-outline mb-4">
@@ -77,10 +77,12 @@
             "users/add",
             data,
             function (response) {
-                toastr.success("You have successfully added the user.");
+                //toastr.success("You have successfully added the user.");
+                console.log("SUCCESS")
             },
             function (xhr) {
-                toastr.error(xhr);
+                //toastr.error(xhr);
+                console.log("ERROR")
             }
         );
     });

@@ -23,5 +23,5 @@ class UserDao extends BaseDao {
 //        } catch (PDOException $e) {
 //            die("SQL Error: " . $e->getMessage());
 //        }
-        return $this->insert('patients', $user);
+        return $this->insert('user', $user);
 }}
