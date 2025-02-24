@@ -4,6 +4,8 @@ header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
 require_once __DIR__ . '/../services/UserService.php';
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 Flight::set('user_service', new UserService());
 
@@ -38,10 +40,11 @@ Flight::group('/users', function() {
 
     Flight::route('GET /user', function () {
         $body = Flight::request()->query;
-
         $user_service = new UserService();
         $user = $user_service->get_user_by_id(12);
         Flight::json($user, 200);
     });
+
+
 
 });
