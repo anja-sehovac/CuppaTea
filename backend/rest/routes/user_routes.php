@@ -16,8 +16,8 @@ Flight::group('/users', function() {
             Flight::halt(400, 'Email, password and repeat password are required.');
         }
 
-        if (trim($data['email']) == "" || trim($data['password']) == "" || trim($data['repeat_password_signup']) == "") {
-            Flight::halt(400, 'Email, password, and repeat password cannot be empty.');
+        if (trim($data['email']) == "" || trim($data['password']) == "" || trim($data['repeat_password_signup']) == "" || trim($data['address']) == "" ) {
+            Flight::halt(400, 'Email, password, repeat password, and address cannot be empty.');
         }
 
         if ($data['password'] !== $data['repeat_password_signup']) {
@@ -34,6 +34,14 @@ Flight::group('/users', function() {
         Flight::json(
             $user
         );
+    });
+
+    Flight::route('GET /user', function () {
+        $body = Flight::request()->query;
+
+        $user_service = new UserService();
+        $user = $user_service->get_user_by_id(12);
+        Flight::json($user, 200);
     });
 
 });

@@ -40,6 +40,12 @@
                         </div>
                     </div>
 
+<!--                    Adresa-->
+                    <div data-mdb-input-init class="form-outline mb-4">
+                        <input type="text" id="address" name = "address" class="form-control form-control-lg" />
+                        <label class="form-label" for="address">Address</label>
+                    </div>
+
                     <!-- Email input -->
                     <div data-mdb-input-init class="form-outline mb-4">
                         <input type="email" id="email" name = "email" class="form-control form-control-lg" />
@@ -79,6 +85,9 @@
                 required: true,
                 email: true
             },
+            address: {
+                required: true
+            },
             password: {
                 required: true,
                 minlength: 3
@@ -95,6 +104,9 @@
             email: {
                 required: "Please enter your email address.",
                 email: "Please enter a valid email address."
+            },
+            address: {
+                required: "Please enter your address."
             },
             password: {
                 required: "Please provide a password.",
@@ -116,6 +128,7 @@
                 data,
                 function (response) {
                     toastr.success("You have successfully added the user.");
+                    window.location.href = '#profile';
                 },
                 function (xhr) {
                     toastr.error("Sorry, something went wrong.");

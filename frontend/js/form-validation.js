@@ -61,7 +61,7 @@ var FormValidation = {
             focusCleanup: true,
             errorElement: "em",
             rules: form_rules,
-            form_messages, form_messages,
+            messages: form_messages,
             submitHandler: function (form, event) {
                 event.preventDefault();
                 success.show();
