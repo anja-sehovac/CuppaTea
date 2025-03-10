@@ -3,6 +3,7 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
+
 require_once __DIR__ . '/../services/UserService.php';
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
@@ -45,6 +46,12 @@ Flight::group('/users', function() {
         Flight::json($user, 200);
     });
 
-
+    Flight::route('GET /current', function() {
+        $current_user_id = Flight::get('user');
+        $user = Flight::get('user_service')->get_user_by_id($current_user_id);
+        Flight::json(
+            $user
+        );
+    });
 
 });
