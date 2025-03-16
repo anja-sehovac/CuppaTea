@@ -1,0 +1,217 @@
+<section style="background-color: #eee;">
+
+
+
+
+  <!-- below modal -->
+    <div class="container py-5">
+      <!-- Button trigger modal -->
+
+
+        <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#filterModal" style="background-color: #4F1F14">Open Filters</button>
+        
+        <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+              <div class="modal-header border-0">
+                <h5 class="modal-title" id="filterModalLabel">Filters</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="container-fluid">
+                  <div class="row mb-4">
+                    <div class="col-12">
+                      <h6 class="mb-3">Select Categories</h6>
+                      <div class="d-flex flex-wrap gap-2">
+                        <div class="form-check category-item">
+                          <input class="form-check-input category-checkbox" type="checkbox" id="cat1">
+                          <label class="form-check-label p-2" for="cat1">Electronics</label>
+                        </div>
+                        <div class="form-check category-item">
+                          <input class="form-check-input category-checkbox" type="checkbox" id="cat2">
+                          <label class="form-check-label p-2" for="cat2">Fashion</label>
+                        </div>
+                        <div class="form-check category-item">
+                          <input class="form-check-input category-checkbox" type="checkbox" id="cat3">
+                          <label class="form-check-label p-2" for="cat3">Home & Living</label>
+                        </div>
+                        <div class="form-check category-item">
+                          <input class="form-check-input category-checkbox" type="checkbox" id="cat4">
+                          <label class="form-check-label p-2" for="cat4">Books</label>
+                        </div>
+                        <div class="form-check category-item">
+                          <input class="form-check-input category-checkbox" type="checkbox" id="cat5">
+                          <label class="form-check-label p-2" for="cat5">Sports</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-md-6 mb-3">
+                      <h6 class="mb-3">Price Range</h6>
+                      <select class="form-select" id="priceRange">
+                        <option selected value="">Select Price Range</option>
+                        <option value="0-50">$0 - $50</option>
+                        <option value="50-100">$50 - $100</option>
+                        <option value="100-250">$100 - $250</option>
+                        <option value="250-500">$250 - $500</option>
+                        <option value="500+">$500+</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <h6 class="mb-3">Sort By</h6>
+                      <select class="form-select" id="sortBy">
+                        <option selected value="">Choose sorting option</option>
+                        <option value="low-high">Price: Low to High</option>
+                        <option value="high-low">Price: High to Low</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer border-0">
+                <button type="button" class="btn btn-outline-secondary" id="resetBtn">Reset Filters</button>
+                <button type="button" class="btn btn-primary" id="applyBtn">Apply Filters</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <script>
+        document.getElementById("resetBtn").addEventListener("click", function () {
+          document.querySelectorAll(".category-checkbox").forEach(checkbox => checkbox.checked = false);
+          document.getElementById("priceRange").value = "";
+          document.getElementById("sortBy").value = "";
+        });
+        
+        document.getElementById("applyBtn").addEventListener("click", function () {
+          const selectedCategories = [...document.querySelectorAll(".category-checkbox:checked")].map(cb => cb.nextElementSibling.textContent.trim());
+          const selectedPrice = document.getElementById("priceRange").value;
+          const selectedSort = document.getElementById("sortBy").value;
+        
+          console.log("Selected Categories:", selectedCategories);
+          console.log("Selected Price Range:", selectedPrice);
+          console.log("Selected Sort Option:", selectedSort);
+        });
+        </script>
+
+        
+      
+
+      <div class="row">
+        
+        <div class="col-md-12 col-lg-4 mb-4 mb-lg-0">
+          <div class="card" style="background-color: #53342A">
+            <!-- <div class="d-flex justify-content-between p-3" style = "color: #ffffff">
+              <p class="lead mb-0">Today's Combo Offer</p>
+              <div
+                class="bg-info rounded-circle d-flex align-items-center justify-content-center shadow-1-strong"
+                style="width: 35px; height: 35px;">
+                <p class="text-white mb-0 small">x4</p>
+              </div>
+            </div> -->
+            <img src="/web_project/frontend/assets/images/laptop.jpeg"
+              class="card-img-top" alt="Laptop" />
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <p class="small"><a href="#!" class="text-white">Laptops</a></p>
+                <p class="small text-danger"><s>$1099</s></p>
+              </div>
+  
+              <div class="d-flex justify-content-between mb-3" style="color: white">
+                <h5 class="mb-0">HP Notebook</h5>
+                <h5 class="text-white mb-0">$999</h5>
+              </div>
+  
+              <div class="d-flex justify-content-between mb-2">
+                <p class="text-white mb-0">Available: <span class="fw-bold">6</span></p>
+                <div class="ms-auto text-warning">
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 mb-4 mb-md-0">
+          <div class="card" style="background-color: #53342A">
+            <!-- <div class="d-flex justify-content-between p-3" style = "color: #ffffff">
+              <p class="lead mb-0">Today's Combo Offer</p>
+              <div
+                class="bg-info rounded-circle d-flex align-items-center justify-content-center shadow-1-strong"
+                style="width: 35px; height: 35px;">
+                <p class="text-white mb-0 small">x2</p>
+              </div>
+            </div> -->
+            <img src="/web_project/frontend/assets/images/laptop.jpeg"
+              class="card-img-top" alt="Laptop" />
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <p class="small"><a href="#!" class="text-white">Laptops</a></p>
+                <p class="small text-danger"><s>$1199</s></p>
+              </div>
+  
+              <div class="d-flex justify-content-between mb-3" style="color: white">
+                <h5 class="mb-0">HP Envy</h5>
+                <h5 class="text-white mb-0">$1099</h5>
+              </div>
+  
+              <div class="d-flex justify-content-between mb-2">
+                <p class="text-white mb-0">Available: <span class="fw-bold">7</span></p>
+                <div class="ms-auto text-warning">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="far fa-star"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 mb-4 mb-md-0">
+          <div class="card" style="background-color: #53342A">
+            <!-- <div class="d-flex justify-content-between p-3" style = "color: #ffffff">
+              <p class="lead mb-0">Today's Combo Offer</p>
+              <div
+                class="bg-info rounded-circle d-flex align-items-center justify-content-center shadow-1-strong"
+                style="width: 35px; height: 35px;">
+                <p class="text-white mb-0 small">x3</p>
+              </div>
+            </div> -->
+            <img src="/web_project/frontend/assets/images/laptop.jpeg"
+              class="card-img-top" alt="Gaming Laptop" />
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <p class="small"><a href="#!" class="text-white">Laptops</a></p>
+                <p class="small text-danger"><s>$1399</s></p>
+              </div>
+  
+              <div class="d-flex justify-content-between mb-3" style="color: white">
+                <h5 class="mb-0">Toshiba B77</h5>
+                <h5 class="text-white mb-0">$1299</h5>
+              </div>
+  
+              <div class="d-flex justify-content-between mb-2">
+                <p class="text-white mb-0">Available: <span class="fw-bold">5</span></p>
+                <div class="ms-auto text-warning">
+                  <i class="fa fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star-half-alt"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+

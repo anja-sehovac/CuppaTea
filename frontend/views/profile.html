@@ -1,82 +1,175 @@
-<section id="profile" class="bg-primary-subtle">
-    <div class="container py-5 d-flex flex-column align-items-center w-100">
-        <div class="col-lg-6">
-            <div class="card mb-4 border border-primary">
-                <div class="card-body d-flex flex-column align-items-center text-center w-100">
+<section id="profile" style="background: linear-gradient(to right, #beb3a6, #d8c9b7, #e4d8c7, #bfae97);">
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-4">
+                <div class="card mb-4" style="border: 2px solid #53342A;">
 
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
-                         class="rounded-circle img-fluid" style="width: 150px;">
-                    <h5 class="my-3">John Smith</h5>
-                    <p class="text-muted mb-1">Role</p>
-                    <p class="text-muted mb-4">Customer</p>
-                    <div class="d-flex justify-content-center mb-2">
-                        <button type="button" class="btn btn-outline-primary">Edit Profile</button>
+                    <div class="card-body text-center">
+                        <img src= "frontend/assets/images/ava3.webp"
+                            class="rounded-circle img-fluid" style="width: 150px;">
+                        <h5 class="my-3">John Smith</h5>
+                        <p class="text-muted mb-4">Role - Customer</p>
+                        <div class="d-flex justify-content-center mb-2">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit_modal">Edit my Profile</button>
+                        </div>
+                        <div class="d-flex justify-content-center mb-2">
+                            <button type="button" class="btn btn-outline-danger">Delete my Account</button>
+                        </div>
                     </div>
-                    <div class="d-flex justify-content-center mb-2">
-                        <button type="button" class="btn btn-outline-danger">Delete Profile</button>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="card mb-4" style="border: 2px solid #53342A;">
+
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3"><p class="mb-0">Full Name</p></div>
+                            <div class="col-sm-9"><p class="text-muted mb-0">Johnatan Smith</p></div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3"><p class="mb-0">Username</p></div>
+                            <div class="col-sm-9"><p class="text-muted mb-0">Anja</p></div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3"><p class="mb-0">Email</p></div>
+                            <div class="col-sm-9"><p class="text-muted mb-0">example@example.com</p></div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3"><p class="mb-0">Date of Birth</p></div>
+                            <div class="col-sm-9"><p class="text-muted mb-0">27.01.2024.</p></div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3"><p class="mb-0">Address</p></div>
+                            <div class="col-sm-9"><p class="text-muted mb-0">Bay Area, San Francisco, CA</p></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-6">
-            <div class="card mb-4 border border-primary">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <p class="mb-0">Full Name</p>
-                        </div>
-                        <div class="col-sm-9">
-                            <p class="text-muted mb-0">Johnatan Smith</p>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <p class="mb-0">Username</p>
-                        </div>
-                        <div class="col-sm-9">
-                            <p class="text-muted mb-0">Username</p>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <p class="mb-0">Date of Birth</p>
-                        </div>
-                        <div class="col-sm-9">
-                            <p class="text-muted mb-0">12-06-2003</p>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <p class="mb-0">Address</p>
-                        </div>
-                        <div class="col-sm-9">
-                            <p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <p class="mb-0">Email</p>
-                        </div>
-                        <div class="col-sm-9">
-                            <p class="text-muted mb-0">example@example.com</p>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <p class="mb-0">Password</p>
-                        </div>
-                        <div class="col-sm-9">
-                            <p class="text-muted mb-0">******</p>
-                        </div>
-                    </div>
+        
+        <!-- Recent Orders -->
+        <div class="row mb-4">
+            <div class="col-lg-12">
+                <div class="card mb-4" style="border: 2px solid #53342A;">
 
+                    <div class="card-header" style="background-color: #53342A; color: white;">
+
+                        <h5 class="mb-0">Recent Purchases</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="dashboard_table1">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Order ID</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Product Name</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Total</th>
+                                        <th scope="col">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recentOrdersTable">
+                                    <tr>
+                                        <td>12</td>
+                                        <td>27.01.2025</td>
+                                        <td>Rose</td>
+                                        <td>2</td>
+                                        <td>$75.34</td>
+                                        <td>Delivered</td>
+                                    </tr>
+                                    <tr>
+                                        <td>13</td>
+                                        <td>06.01.2025</td>
+                                        <td>Daisy</td>
+                                        <td>1</td>
+                                        <td>$75.34</td>
+                                        <td>Pending</td>
+                                    </tr>
+                                    <tr>
+                                        <td>45</td>
+                                        <td>17.01.2024</td>
+                                        <td>Wildflower Bouquet</td>
+                                        <td>2</td>
+                                        <td>$75.34</td>
+                                        <td>Canceled</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<div class="modal fade" id="edit_modal" aria-labelledby="edit_modal_label">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="edit_modal_label">Edit Profile Information</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="edit_profile_form">
+            <div class="row">
+              <!-- Username input -->
+              <div class="mb-3 col-6">
+                <label class="form-label" for="edit_username">Username</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">@</div>
+                  </div>
+                  <input name="edit_username" type="text" class="form-control form-control-md" id="edit_username" value="Heeeena">
+                </div>
+              </div>
+  
+              <!-- Birthday input -->
+              <div class="mb-3 col-6">
+                <label class="form-label" for="edit_date_of_birth">Date of Birth</label>
+                <input name="edit_date_of_birth" type="date" id="edit_date_of_birth" class="form-control form-control-md" value="2003-01-27" />
+              </div>
+            </div>
+  
+            <!-- Fullname input -->
+            <div class="mb-3">
+              <label class="form-label" for="edit_name">Full Name</label>
+              <input name="edit_name" id="edit_name" class="form-control form-control-md" value="Hena Potogija" />
+            </div>
+  
+            <!-- Email input -->
+            <div class="mb-3">
+              <label class="form-label" for="edit_email">Email address</label>
+              <input name="edit_email" type="email" id="edit_email" class="form-control form-control-md" value="hena.potogija@stu.ibu.edu.ba" />
+            </div>
+  
+            <!-- Address input -->
+            <div class="mb-3">
+              <label class="form-label" for="edit_address">Address</label>
+              <input name="edit_address" id="edit_address" class="form-control form-control-md" value="Bay Area, San Francisco, CA" />
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" style="outline-color: #4F1F14;">Close</button> 
+            <button type="button" class="btn" style="background-color: #53342A; color: #FFFFFF;">Save changes</button>
+            
+        </div>
+       </form>
+      </div>
+    </div>
+  </div>
+
+
+<script>
+    RestClient.get("users/current", function(response) {
+        console.log("User Data:", response); // Success callback
+    }, function(error) {
+        console.error("Error fetching user data:", error); // Error callback
+    });
+</script>

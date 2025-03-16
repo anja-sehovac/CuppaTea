@@ -1,7 +1,7 @@
 const Utils = {
     init_spapp: function () {
         var app = $.spapp({
-            defaultView: "#login",
+            defaultView: "#product",
             templateDir: "./../../../web_project/frontend/views/"
 
         });
