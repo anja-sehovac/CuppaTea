@@ -67,7 +67,7 @@
             Utils.block_ui("#login-form");
 
             RestClient.post(
-                "login",
+                "auth/login",
                 data,
                 function (response) {
                     window.localStorage.setItem("token", response.token);
