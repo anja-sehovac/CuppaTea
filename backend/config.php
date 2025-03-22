@@ -9,7 +9,7 @@ class Config
 {
     public static function DB_NAME()
     {
-        return Config::get_env("DB_NAME", 'ecommerce');
+        return Config::get_env("DB_NAME", 'tea_shop');
     }
 
     public static function DB_PORT()
