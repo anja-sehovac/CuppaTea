@@ -1,10 +1,18 @@
 const Utils = {
     init_spapp: function () {
         var app = $.spapp({
-            defaultView: "#product",
+            defaultView: "#landing_page",
             templateDir: "./../../../web_project/frontend/views/"
 
         });
+
+        app.route({
+            view: "profile",
+            onReady: function () {
+                display_user_profile();
+            }
+          });
+          
         app.run();
     },
     block_ui: function (element) {

@@ -92,3 +92,37 @@ document.addEventListener("DOMContentLoaded", function () {
     // Listen for hash changes (SPA navigation)
     window.addEventListener("hashchange", updateActiveLink);
 });
+
+function display_user_profile() {
+
+    RestClient.get("users/current", function(response) {
+        console.log("User Data:", response); // Debugging
+  
+        // Update Profile Picture (Use default if null)
+        let profileImg = document.querySelector("#profile img");
+        profileImg.src = response.image ? response.image : "frontend/assets/images/ava3.webp";
+  
+        // Update Profile Information in the card
+        document.querySelector("#profile h5").textContent = response.name || "N/A";
+        document.querySelector("#profile p.text-muted.mb-4").textContent = (Number(response.role_id) === 1 ? "Customer" : "Administrator");
+        
+        // Update Detailed Profile Information
+        let profileFields = document.querySelectorAll("#profile .col-sm-9 p");
+        profileFields[0].textContent = response.name || "N/A"; // Full Name
+        profileFields[1].textContent = response.username || "N/A"; // Username
+        profileFields[2].textContent = response.email || "N/A"; // Email
+        profileFields[3].textContent = response.date_of_birth || "N/A"; // Date of Birth
+        profileFields[4].textContent = response.address || "N/A"; // Address
+  
+        // Update Edit Modal Form Fields
+        document.querySelector("#edit_name").value = response.name || "";
+        document.querySelector("#edit_username").value = response.username || "";
+        document.querySelector("#edit_email").value = response.email || "";
+        document.querySelector("#edit_date_of_birth").value = response.date_of_birth || "";
+        document.querySelector("#edit_address").value = response.address || "";
+  
+    }, function(error) {
+        console.error("Error fetching user data:", error);
+    });
+  
+  }
