@@ -10,11 +10,11 @@ Flight::set('cart_service', new CartService());
 
 Flight::group('/cart', function () {
 
-    Flight::route('GET /', function () {
-        $user_id = Flight::get('user');
-        $cart = Flight::get('cart_service')->get_cart_by_user($user_id);
-        Flight::json($cart);
-    });
+    // Flight::route('GET /', function () {
+    //     $user_id = Flight::get('user');
+    //     $cart = Flight::get('cart_service')->get_cart_by_user($user_id);
+    //     Flight::json($cart);
+    // });
 
     Flight::route('POST /add', function () {
         $user_id = Flight::get('user');
@@ -38,9 +38,29 @@ Flight::group('/cart', function () {
     });
 
     Flight::route('GET /', function () {
-        $user_id = Flight::get('user');
-        $cart = Flight::get('cart_service')->get_cart_by_user($user_id);
+        $user_id = Flight::get('user'); // dobavlja user_id iz middlewarea
+    
+        $params = Flight::request()->query->getData();
+    
+
+        $search = isset($params['search']) ? trim($params['search']) : "";
+        $sort_by = isset($params['sort_by']) ? strtolower($params['sort_by']) : "name";
+        $sort_order = isset($params['sort_order']) ? strtolower($params['sort_order']) : "asc";
+
+        $cart = Flight::get('cart_service')->get_filtered_cart($user_id, $search, $sort_by, $sort_order);
+        
         Flight::json($cart);
+    });
+    
+    
+    
+    
+    
+
+    Flight::route('DELETE /clear', function () {
+        $user_id = Flight::get('user');
+        Flight::get('cart_service')->clear_cart($user_id);
+        Flight::json(['message' => 'Cart cleared']);
     });
 
 });

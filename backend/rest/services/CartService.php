@@ -28,4 +28,13 @@ class CartService {
     {
         return $this->cartDao->get_cart_by_user($user_id);
     }
+    public function get_filtered_cart($user_id, $search = "", $sort_by = "name", $sort_order = "asc")
+{
+    return $this->cartDao->get_cart_by_user($user_id, $search, $sort_by, $sort_order);
+}
+
+    public function clear_cart($user_id)
+    {
+        return $this->cartDao->clear_cart($user_id);
+    }
 }
