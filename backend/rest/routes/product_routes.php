@@ -61,7 +61,7 @@ Flight::group('/products', function() {
     });
     
     
-    Flight::route('POST /update/@id', function($id) {
+    Flight::route('PUT /update/@id', function($id) {
         $data = Flight::request()->data->getData();
         
         $product = Flight::get('product_service')->update_product($id, $data);

@@ -14,3 +14,19 @@ Stack trace:
 #11 C:\xampp\htdocs\web_project\backend\vendor\mikecao\flight\flight\Flight.php(124): flight\Engine->__call('start', Array)
 #12 C:\xampp\htdocs\web_project\backend\index.php(20): Flight::__callStatic('start', Array)
 #13 {main}
+ErrorException: Undefined array key "customer_id" in C:\xampp\htdocs\web_project\backend\rest\routes\product_view_routes.php:17
+Stack trace:
+#0 C:\xampp\htdocs\web_project\backend\rest\routes\product_view_routes.php(17): flight\Engine->handleError(2, 'Undefined array...', 'C:\\xampp\\htdocs...', 17)
+#1 [internal function]: {closure}()
+#2 C:\xampp\htdocs\web_project\backend\vendor\mikecao\flight\flight\core\Dispatcher.php(354): call_user_func_array(Object(Closure), Array)
+#3 C:\xampp\htdocs\web_project\backend\vendor\mikecao\flight\flight\core\Dispatcher.php(287): flight\core\Dispatcher->invokeCallable(Object(Closure), Array)
+#4 C:\xampp\htdocs\web_project\backend\vendor\mikecao\flight\flight\Engine.php(547): flight\core\Dispatcher->execute(Object(Closure), Array)
+#5 [internal function]: flight\Engine->_start()
+#6 C:\xampp\htdocs\web_project\backend\vendor\mikecao\flight\flight\core\Dispatcher.php(376): call_user_func_array(Array, Array)
+#7 C:\xampp\htdocs\web_project\backend\vendor\mikecao\flight\flight\core\Dispatcher.php(287): flight\core\Dispatcher->invokeCallable(Array, Array)
+#8 C:\xampp\htdocs\web_project\backend\vendor\mikecao\flight\flight\core\Dispatcher.php(131): flight\core\Dispatcher->execute(Array, Array)
+#9 C:\xampp\htdocs\web_project\backend\vendor\mikecao\flight\flight\core\Dispatcher.php(95): flight\core\Dispatcher->runEvent('start', Array)
+#10 C:\xampp\htdocs\web_project\backend\vendor\mikecao\flight\flight\Engine.php(118): flight\core\Dispatcher->run('start', Array)
+#11 C:\xampp\htdocs\web_project\backend\vendor\mikecao\flight\flight\Flight.php(124): flight\Engine->__call('start', Array)
+#12 C:\xampp\htdocs\web_project\backend\index.php(21): Flight::__callStatic('start', Array)
+#13 {main}
