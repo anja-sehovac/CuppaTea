@@ -1,36 +1,61 @@
 <?php
-require_once __DIR__ . "/../dao/WishlistDao.php";
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET,PUT,POST,DELETE,PATCH,OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Credentials", "true");
 
-class WishlistService {
-    private $wishlistDao;
+require_once __DIR__ . '/../services/WishlistService.php';
 
-    public function __construct()
-    {
-        $this->wishlistDao = new WishlistDao();
-    }
+Flight::set('wishlist_service', new WishlistService());
 
-    public function add_to_wishlist($user_id, $product_id)
-    {
-        return $this->wishlistDao->add_to_wishlist($user_id, $product_id);
-    }
+Flight::group('/wishlist', function () {
 
-    public function remove_from_wishlist($user_id, $product_id)
-    {
-        return $this->wishlistDao->remove_from_wishlist($user_id, $product_id);
-    }
+    Flight::route('GET /', function () {
+        $user_id = Flight::get('user'); 
+    
+        $queryParams = Flight::request()->query;
 
-    public function update_quantity($user_id, $product_id, $quantity)
-    {
-        return $this->wishlistDao->update_quantity($user_id, $product_id, $quantity);
-    }
+        $search = isset($queryParams['search']) ? trim($queryParams['search']) : "";
+        $sort_by = isset($queryParams['sort_by']) ? strtolower($queryParams['sort_by']) : "name";
+        $sort_order = isset($queryParams['sort_order']) ? strtolower($queryParams['sort_order']) : "asc";
 
-    public function get_wishlist_by_user($user_id)
-    {
-        return $this->wishlistDao->get_wishlist_by_user($user_id);
-    }
+        $wishlist = Flight::get('wishlist_service')->get_filtered_wishlist($user_id, $search, $sort_by, $sort_order);
+        
+        Flight::json($wishlist);
+    });
 
-    public function clear_wishlist($user_id)
-    {
-        return $this->wishlistDao->clear_wishlist($user_id);
-    }
-}
+    Flight::route('GET /summary', function () {
+        $user_id = Flight::get('user'); 
+    
+        $summary = Flight::get('wishlist_service')->get_wishlist_summary_by_user($user_id);
+    
+        Flight::json($summary);
+    });
+
+    Flight::route('POST /add', function () {
+        $user_id = Flight::get('user');
+        $data = Flight::request()->data->getData();
+        Flight::get('wishlist_service')->add_to_wishlist($user_id, $data['product_id']);
+        Flight::json(['message' => 'Item added to wishlist']);
+    });
+
+    Flight::route('DELETE /remove/@product_id', function ($product_id) {
+        $user_id = Flight::get('user');
+        Flight::get('wishlist_service')->remove_from_wishlist($user_id, $product_id);
+        Flight::json(['message' => 'Item removed from wishlist']);
+    });
+
+    Flight::route('POST /update', function () {
+        $user_id = Flight::get('user');
+        $data = Flight::request()->data->getData();
+        Flight::get('wishlist_service')->update_quantity($user_id, $data['product_id'], $data['quantity']);
+        Flight::json(['message' => 'Wishlist updated']);
+    });
+
+    Flight::route('DELETE /clear', function () {
+        $user_id = Flight::get('user');
+        Flight::get('wishlist_service')->clear_wishlist($user_id);
+        Flight::json(['message' => 'wishlist cleared']);
+    });
+
+});

@@ -37,4 +37,9 @@ class CartService {
     {
         return $this->cartDao->clear_cart($user_id);
     }
+
+    public function get_cart_summary_by_user($user_id)
+     {
+         return $this->cartDao->get_cart_summary_by_user($user_id);
+     }
 }

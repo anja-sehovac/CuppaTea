@@ -63,4 +63,12 @@ Flight::group('/cart', function () {
         Flight::json(['message' => 'Cart cleared']);
     });
 
+    Flight::route('GET /summary', function () {
+        $user_id = Flight::get('user'); 
+    
+        $summary = Flight::get('cart_service')->get_cart_summary_by_user($user_id);
+    
+        Flight::json($summary);
+    });
+
 });
