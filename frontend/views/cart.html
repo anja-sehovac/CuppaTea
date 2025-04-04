@@ -142,34 +142,52 @@
                       
   
                       <form class="mt-4">
-                        <div data-mdb-input-init class="form-outline form-white mb-4" >
-                          <input type="text" id="typeName" class="form-control form-control-lg" siez="17"
-                            placeholder="Cardholder's Name" style="background-color: #efe4d4;"/>
-                          <label class="form-label text-white" for="typeName">Cardholder's Name</label>
-                        </div>
-  
-                        <div data-mdb-input-init class="form-outline form-white mb-4">
-                          <input type="text" id="typeText" class="form-control form-control-lg" siez="17"
-                            placeholder="1234 5678 9012 3457" minlength="19" maxlength="19" style="background-color: #efe4d4;" />
-                          <label class="form-label text-white" for="typeText">Card Number</label>
-                        </div>
-  
                         <div class="row mb-4">
                           <div class="col-md-6">
                             <div data-mdb-input-init class="form-outline form-white">
                               <input type="text" id="typeExp" class="form-control form-control-lg" style="background-color: #efe4d4;"
-                                placeholder="MM/YYYY" size="7" id="exp" minlength="7" maxlength="7"  />
-                              <label class="form-label text-white" for="typeExp">Expiration</label>
+                                placeholder="Name" size="7" id="exp" minlength="7" maxlength="7"  />
+                              <label class="form-label text-white" for="typeExp">Name</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div data-mdb-input-init class="form-outline form-white">
+                              <input type="text" id="typeText" class="form-control form-control-lg" style="background-color: #efe4d4;"
+                                placeholder="Surname" size="1" minlength="3" maxlength="3"  />
+                              <label class="form-label text-white" for="typeText">Surname</label>
+                            </div>
+                          </div>
+                        </div>
+                        <div data-mdb-input-init class="form-outline form-white mb-4" >
+                          <input type="text" id="typeName" class="form-control form-control-lg" siez="17"
+                            placeholder="Address" style="background-color: #efe4d4;"/>
+                          <label class="form-label text-white" for="typeName">Address</label>
+                        </div>
+
+                        <div class="row mb-4">
+                          <div class="col-md-6">
+                            <div data-mdb-input-init class="form-outline form-white">
+                              <input type="text" id="typeExp" class="form-control form-control-lg" style="background-color: #efe4d4;"
+                                placeholder="City" size="7" id="exp" minlength="7" maxlength="7"  />
+                              <label class="form-label text-white" for="typeExp">City</label>
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div data-mdb-input-init class="form-outline form-white">
                               <input type="password" id="typeText" class="form-control form-control-lg" style="background-color: #efe4d4;"
-                                placeholder="&#9679;&#9679;&#9679;" size="1" minlength="3" maxlength="3"  />
-                              <label class="form-label text-white" for="typeText">Cvv</label>
+                                placeholder="Country" size="1" minlength="3" maxlength="3"  />
+                              <label class="form-label text-white" for="typeText">Country</label>
                             </div>
                           </div>
                         </div>
+  
+                        <div data-mdb-input-init class="form-outline form-white mb-4">
+                          <input type="text" id="typeText" class="form-control form-control-lg" siez="17"
+                            placeholder="Phone Number" minlength="19" maxlength="19" style="background-color: #efe4d4;" />
+                          <label class="form-label text-white" for="typeText">Phone Number</label>
+                        </div>
+  
+                        
   
                       </form>
   
@@ -191,9 +209,8 @@
                       </div>
   
                       <div class="d-flex justify-content-center">
-                        <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-lg btn-white-custom" data-bs-toggle="modal" data-bs-target="#purchase_modal" style="background-color: #efe4d4; border: 1px solid 53342a;">
+                        <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-lg btn-white-custom" style="background-color: #efe4d4; border: 1px solid 53342a;">
                             <div class="d-flex justify-content-between">
-                                <span>$4818.00</span>
                                 <span> Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></span>
                             </div>
                         </button>
@@ -214,60 +231,5 @@
     </div>
   </section>
 
-  <div class="modal fade" id="purchase_modal" aria-labelledby="purchase_modal_label">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="purchase_modal_label">Purchase Details</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form id="purchase_form">
-            <div class="row">
-              <!-- Name input -->
-              <div class="mb-3 col-6">
-                <label class="form-label" for="name">Name</label>
-                <input name="name" type="text" class="form-control form-control-md" id="name" required />
-              </div>
   
-              <!-- Surname input -->
-              <div class="mb-3 col-6">
-                <label class="form-label" for="surname">Surname</label>
-                <input name="surname" type="text" class="form-control form-control-md" id="surname" required />
-              </div>
-            </div>
-  
-            <!-- Address input -->
-            <div class="mb-3">
-              <label class="form-label" for="address">Address</label>
-              <input name="address" id="address" class="form-control form-control-md" required />
-            </div>
-  
-            <div class="row">
-              <!-- City input -->
-              <div class="mb-3 col-6">
-                <label class="form-label" for="city">City</label>
-                <input name="city" id="city" class="form-control form-control-md" required />
-              </div>
-  
-              <!-- Country input -->
-              <div class="mb-3 col-6">
-                <label class="form-label" for="country">Country</label>
-                <input name="country" id="country" class="form-control form-control-md" required />
-              </div>
-            </div>
-  
-            <!-- Phone Number input -->
-            <div class="mb-3">
-              <label class="form-label" for="phone_number">Phone Number</label>
-              <input name="phone_number" type="tel" id="phone_number" class="form-control form-control-md" required />
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" style="outline-color: #4F1F14;">Cancel</button> 
-            <button type="submit" class="btn" style="background-color: #53342A; color: #FFFFFF;">Buy</button>
-        </div>
-       </form>
-      </div>
-    </div>
   </div>
