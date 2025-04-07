@@ -45,7 +45,7 @@ Flight::group('/wishlist', function () {
         Flight::json(['message' => 'Item removed from wishlist']);
     });
 
-    Flight::route('POST /update', function () {
+    Flight::route('PATCH /update', function () {
         $user_id = Flight::get('user');
         $data = Flight::request()->data->getData();
         Flight::get('wishlist_service')->update_quantity($user_id, $data['product_id'], $data['quantity']);
