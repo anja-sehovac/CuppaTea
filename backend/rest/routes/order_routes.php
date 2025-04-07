@@ -56,7 +56,7 @@ Flight::group('/order', function () {
         Flight::json(['message' => 'Order removed.']);
     });
 
-    Flight::route('POST /update', function () {
+    Flight::route('PATCH /update', function () {
         $user_id = Flight::get('user');
         $data = Flight::request()->data->getData();
         Flight::get('order_service')->update_order_status($data["order_id"], $data["new_status_id"]);

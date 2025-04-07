@@ -19,7 +19,7 @@ Flight::group('/users', function() {
         Flight::json($user);
     });
 
-    Flight::route('POST /update', function() {
+    Flight::route('PUT /update', function() {
         $current_user_id = Flight::get('user');
         $data = Flight::request()->data->getData();
         

@@ -30,7 +30,7 @@ Flight::group('/cart', function () {
     });
     
 
-    Flight::route('POST /update', function () {
+    Flight::route('PATCH /update', function () {
         $user_id = Flight::get('user');
         $data = Flight::request()->data->getData();
         Flight::get('cart_service')->update_quantity($user_id, $data['product_id'], $data['quantity']);
