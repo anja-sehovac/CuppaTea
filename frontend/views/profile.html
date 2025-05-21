@@ -6,7 +6,7 @@
 
                     <div class="card-body text-center">
                         <img src= "frontend/assets/images/ava3.webp"
-                            class="rounded-circle img-fluid" style="width: 150px;">
+                            class="rounded-circle img-fluid profile-img" style="width: 150px;">
                         <h5 class="my-3">John Smith</h5>
                         <p class="text-muted mb-4">Role - Customer</p>
                         <div class="d-flex justify-content-center mb-2">
@@ -128,7 +128,7 @@
                   <div class="d-flex justify-content-center">
                       <div data-mdb-ripple-init class="btn btn-sm btn-success">
                           <label class="form-label text-white m-1" for="profile_picture">Choose file</label>
-                          <input type="file" class="form-control d-none" id="profile_picture" onchange="displaySelectedImage(event, 'selectedImage')" />
+                          <input type="file" class="form-control d-none" id="profile_picture" name = "file" onchange="displaySelectedImage(event, 'selectedImage')" />
                       </div>
                   </div>
               </div>
