@@ -374,18 +374,27 @@
 
 <script>
 function updateNavbarVisibility() {
-  const isAdminDashboard = window.location.hash === "#admin_dashboard";
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isAdmin = user && user.role_id === 2;
 
   const browse = document.getElementById("nav-browse");
   const wishlist = document.getElementById("nav-wishlist");
   const cart = document.getElementById("nav-cart");
   const searchWrapper = document.getElementById("nav-search-wrapper");
 
-  if (browse) browse.style.display = isAdminDashboard ? "none" : "";
-  if (wishlist) wishlist.style.display = isAdminDashboard ? "none" : "";
-  if (cart) cart.style.display = isAdminDashboard ? "none" : "";
-  if (searchWrapper) searchWrapper.style.display = isAdminDashboard ? "none" : "";
+  // Hide for admins, show for others
+  if (browse) browse.style.display = isAdmin ? "none" : "";
+  if (wishlist) wishlist.style.display = isAdmin ? "none" : "";
+  if (cart) cart.style.display = isAdmin ? "none" : "";
+  if (searchWrapper) searchWrapper.style.display = isAdmin ? "none" : "";
 }
+
+// Run once on load
+updateNavbarVisibility();
+
+// Also update after hash change, in case SPA logic requires it
+window.addEventListener("hashchange", updateNavbarVisibility);
+</script>
 
 // Run immediately
 updateNavbarVisibility();
