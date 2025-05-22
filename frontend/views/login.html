@@ -76,7 +76,11 @@
 
                     toastr.success("You logged in successfully.");
 
-                    window.location.hash = "#profile";
+                    if (response.role_id == 1) {
+                        window.location.hash = "#profile";
+                    } else {
+                        window.location.hash = "#admin_dashboard";
+                    }
                 },
                 function (error) {
                     toastr.error("Error occurred while logging into your account.");
