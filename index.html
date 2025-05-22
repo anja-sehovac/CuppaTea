@@ -356,6 +356,23 @@
 </script>
 
 <script>
+  // Adjust dashboard link depending on role
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (user && user.role_id === 2) {
+    const dashboardLink = document.querySelector("#nav-dashboard a");
+    if (dashboardLink) {
+      dashboardLink.setAttribute("href", "#admin_dashboard");
+      dashboardLink.innerHTML = `
+        <div><i class="fas fa-user-shield fa-lg mb-1" style="color: #F1E9CF;"></i></div>
+        Admin Dashboard
+      `;
+    }
+  }
+</script>
+
+
+<script>
 function updateNavbarVisibility() {
   const isAdminDashboard = window.location.hash === "#admin_dashboard";
 
