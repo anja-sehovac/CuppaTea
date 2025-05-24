@@ -278,11 +278,45 @@
      * )
      */
      Flight::route('PUT /update/@id', function($id) {
-        Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
          $data = Flight::request()->data->getData();
          $product = Flight::get('product_service')->update_product($id, $data);
          MessageHandler::handleServiceResponse($product);
      });
+
+     Flight::route('POST /upload_image/@product_id', function($product_id) {
+    Flight::auth_middleware()->authorizeRoles([Roles::ADMIN]);
+    if (!isset($_FILES['product_image'])) {
+        Flight::halt(400, 'No file uploaded.');
+    }
+
+    $file = $_FILES['product_image'];
+    $allowed = ['image/jpeg', 'image/png', 'image/webp'];
+
+    if (!in_array($file['type'], $allowed)) {
+        Flight::halt(400, 'Only JPG, PNG, or WEBP images are allowed.');
+    }
+
+    $uploads_dir = __DIR__ . '/../../uploads/';
+    $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+    $new_name = uniqid("product_", true) . '.' . $ext;
+    $target_path = $uploads_dir . $new_name;
+
+    if (!move_uploaded_file($file['tmp_name'], $target_path)) {
+        Flight::halt(500, 'Failed to move uploaded file.');
+    }
+
+    // Save image path to product_image table
+    $relative_url = '/uploads/' . $new_name;
+    $product_service = Flight::get('product_service');
+    $result = $product_service->add_product_image([
+        'product_id' => $product_id,
+        'image' => $relative_url
+    ]);
+
+    MessageHandler::handleServiceResponse($result, 'Product image uploaded successfully.');
+});
+
      
  
  });
