@@ -129,6 +129,35 @@ var UserService = {
 
   logout: function () {
     localStorage.clear();
-    window.location.replace("login.html");
+    window.location.replace("#login");
+  },
+
+  deleteAccount: function () {
+  const userId = localStorage.getItem("user_id");
+
+  if (!userId) {
+    toastr.error("User ID not found.");
+    return;
   }
+
+  if (!confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+    return;
+  }
+
+  Utils.block_ui("#profile");
+
+  RestClient.delete(
+    `users/delete/${userId}`,
+    {},
+    function (response) {
+      toastr.success("Your account has been deleted.");
+      UserService.logout();
+    },
+    function (error) {
+      toastr.error("Error deleting account.");
+    }
+  );
+  Utils.unblock_ui("#profile");
+}
+
 };

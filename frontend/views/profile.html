@@ -13,7 +13,7 @@
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit_modal">Edit my Profile</button>
                         </div>
                         <div class="d-flex justify-content-center mb-2">
-                            <button type="button" class="btn btn-outline-danger">Delete my Account</button>
+                            <button type="button" id="delete-account-btn" class="btn btn-outline-danger">Delete my Account</button>
                         </div>
                     </div>
                 </div>
@@ -184,5 +184,14 @@
         console.log("User Data:", response); // Success callback
     }, function(error) {
         console.error("Error fetching user data:", error); // Error callback
+    });
+</script>
+
+<script src="./frontend/services/user-service.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#delete-account-btn").on("click", function () {
+        UserService.deleteAccount();
+     });
     });
 </script>
