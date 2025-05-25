@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("hashchange", updateActiveLink);
 });
 
-function display_user_profile() {
+/* function display_user_profile() {
 
     RestClient.get("users/current", function(response) {
         console.log("User Data:", response); // Debugging
@@ -127,7 +127,7 @@ function display_user_profile() {
         console.error("Error fetching user data:", error);
     });
   
-  }
+  } */
 
   function displaySelectedImage(event, elementId) {
     const selectedImage = document.getElementById(elementId);

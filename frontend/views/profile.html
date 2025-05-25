@@ -167,10 +167,9 @@
               <label class="form-label" for="edit_address">Address</label>
               <input name="edit_address" id="edit_address" class="form-control form-control-md" value="Bay Area, San Francisco, CA" />
             </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" style="outline-color: #4F1F14;">Close</button> 
-            <button type="button" class="btn" style="background-color: #53342A; color: #FFFFFF;">Save changes</button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" style="outline-color: #4F1F14;">Close</button> 
+                <button type="submit" id = "save-btn" class="btn" style="background-color: #53342A; color: #FFFFFF;">Save changes</button>
             
         </div>
        </form>
@@ -181,9 +180,9 @@
 
 <script>
     RestClient.get("users/current", function(response) {
-        console.log("User Data:", response); // Success callback
+        console.log("User Data:", response);
     }, function(error) {
-        console.error("Error fetching user data:", error); // Error callback
+        console.error("Error fetching user data:", error);
     });
 </script>
 
@@ -194,4 +193,13 @@
         UserService.deleteAccount();
      });
     });
+</script>
+<script>
+  $(document).ready(function () {
+  $("#edit_profile_form").on("submit", function (e) {
+    e.preventDefault(); // Prevent actual form submission
+    UserService.editProfile();
+  });
+});
+
 </script>

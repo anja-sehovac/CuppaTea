@@ -158,6 +158,100 @@ var UserService = {
     }
   );
   Utils.unblock_ui("#profile");
+},
+
+ get_user: function() {
+
+
+    RestClient.get("users/current", function(response) {
+        console.log("User Data:", response); // Debugging
+  
+        // Update Profile Picture (Use default if null)
+        let profileImg = document.querySelector("#profile img");
+        profileImg.src = response.image
+    ? "http://localhost/web_project/backend" + response.image
+    : "frontend/assets/images/ava3.webp";
+  
+        // Update Profile Information in the card
+        document.querySelector("#profile h5").textContent = response.name || "N/A";
+        document.querySelector("#profile p.text-muted.mb-4").textContent = (Number(response.role_id) === 1 ? "Customer" : "Administrator");
+        
+        // Update Detailed Profile Information
+        let profileFields = document.querySelectorAll("#profile .col-sm-9 p");
+        profileFields[0].textContent = response.name || "N/A"; // Full Name
+        profileFields[1].textContent = response.username || "N/A"; // Username
+        profileFields[2].textContent = response.email || "N/A"; // Email
+        profileFields[3].textContent = response.date_of_birth || "N/A"; // Date of Birth
+        profileFields[4].textContent = response.address || "N/A"; // Address
+  
+        // Update Edit Modal Form Fields
+        document.querySelector("#edit_name").value = response.name || "";
+        document.querySelector("#edit_username").value = response.username || "";
+        document.querySelector("#edit_email").value = response.email || "";
+        document.querySelector("#edit_date_of_birth").value = response.date_of_birth || "";
+        document.querySelector("#edit_address").value = response.address || "";
+  
+    }, function(error) {
+        console.error("Error fetching user data:", error);
+    });
+  
+
+
+ },
+editProfile: function () {
+  const form = document.getElementById("edit_profile_form");
+  const formData = new FormData(form);
+
+
+  const data = {
+    username: formData.get("edit_username"),
+    name: formData.get("edit_name"),
+    email: formData.get("edit_email"),
+    date_of_birth: formData.get("edit_date_of_birth"),
+    address: formData.get("edit_address")
+  };
+
+
+  RestClient.put(
+    "users/update",
+    data,
+    function (response) {
+      console.log("Profile info updated.");
+      
+      const fileInput = document.getElementById("profile_picture");
+      const imageFile = fileInput.files[0];
+
+      if (imageFile) {
+  const imageFormData = new FormData();
+  imageFormData.append("profile_picture", imageFile);
+
+  RestClient.uploadFile(
+    "users/upload_image",
+    imageFormData,
+    function (imgResponse) {
+      toastr.success("Profile and image updated successfully.");
+      $("#edit_modal").modal("hide");
+      UserService.get_user();
+    },
+    function () {
+      toastr.error("Profile updated, but image upload failed.");
+    }
+  );
+} else {
+  toastr.success("Profile updated successfully.");
+  $("#edit_modal").modal("hide");
+  UserService.get_user();
 }
+
+    },
+    function (xhr) {
+      const response = xhr.responseJSON || {};
+      const msg = response.message || "Something went wrong while updating your profile.";
+      toastr.error(msg);
+    }
+  );
+}
+
+
 
 };

@@ -52,4 +52,27 @@ var RestClient = {
         // method used for updating an entity
         RestClient.request(url, "PATCH", data, callback, error_callback);
     },
+
+    uploadFile: function (url, formData, callback, error_callback) {
+    let token = localStorage.getItem("token");
+    $.ajax({
+        url: Constants.API_BASE_URL + url,
+        type: "POST",
+        headers: {
+            Authentication: token,
+        },
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            if (callback) callback(response);
+        },
+        error: function (jqXHR) {
+            if (error_callback) error_callback(jqXHR);
+            else toastr.error("Image upload failed.");
+        }
+    });
+}
+
+
 };
