@@ -25,6 +25,7 @@ Flight::route('/*', function() {
  });
 
 require 'rest/routes/user_routes.php';
+require 'rest/routes/category_routes.php';
 require 'rest/routes/auth_routes.php';
 require 'rest/routes/cart_routes.php';
 require 'rest/routes/wishlist_routes.php';

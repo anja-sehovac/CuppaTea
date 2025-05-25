@@ -53,7 +53,7 @@ header("Access-Control-Allow-Origin: *");
      * )
      */
      Flight::route('POST /add', function () {
-         Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+         Flight::auth_middleware()->authorizeRoles([Roles::ADMIN]);
          $data = Flight::request()->data->getData();
          $product = [
              'name' => $data['name'],
@@ -190,6 +190,10 @@ header("Access-Control-Allow-Origin: *");
          MessageHandler::handleServiceResponse($products);
 
      });
+
+
+
+ 
  
      /**
      * @OA\Delete(

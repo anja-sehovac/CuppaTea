@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 }
 
-document.querySelector('#edit_profile_form button.btn').addEventListener('click', function () {
+/* document.querySelector('#edit_profile_form button.btn').addEventListener('click', function () {
     const formData = new FormData();
     const imageInput = document.querySelector("#profile_picture");
 
@@ -176,4 +176,4 @@ document.querySelector('#edit_profile_form button.btn').addEventListener('click'
     } else {
         toastr.warning("Please choose an image file first.");
     }
-});
+}); */
