@@ -1,5 +1,5 @@
 <?php
- header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: *");
  header("Access-Control-Allow-Methods: GET,PUT,POST,DELETE,PATCH,OPTIONS");
  header("Access-Control-Allow-Headers: Content-Type, Authorization");
  header("Access-Control-Allow-Credentials", "true");
@@ -278,7 +278,7 @@
      * )
      */
      Flight::route('PUT /update/@id', function($id) {
-        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
+        Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
          $data = Flight::request()->data->getData();
          $product = Flight::get('product_service')->update_product($id, $data);
          MessageHandler::handleServiceResponse($product);

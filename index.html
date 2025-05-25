@@ -372,7 +372,7 @@
 </script>
 
 
-<script>
+<!-- <script>
 function updateNavbarVisibility() {
   const user = JSON.parse(localStorage.getItem("user"));
   const isAdmin = user && user.role_id === 2;
@@ -394,14 +394,8 @@ updateNavbarVisibility();
 
 // Also update after hash change, in case SPA logic requires it
 window.addEventListener("hashchange", updateNavbarVisibility);
-</script>
+</script> -->
 
-// Run immediately
-updateNavbarVisibility();
-
-// Update on route/hash change
-window.addEventListener("hashchange", updateNavbarVisibility);
-</script>
 
 
 
