@@ -40,4 +40,9 @@ class ProductService {
         }
         $this->productDao->delete_product($product_id);
     }
+
+    public function add_product_image($data) {
+    return $this->productDao->insert('product_image', $data);
+}
+
 }

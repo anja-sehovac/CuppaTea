@@ -29,19 +29,20 @@
     <script src="frontend/assets/js/block-ui.js"></script>
     <!-- Bootstrap Bundle (includes Popper.js) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.1.0/mdb.min.css" />
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.1.0/mdb.min.js"></script>
-
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.1.0/mdb.min.js" defer></script>
+<!-- Datatable -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
     <!-- Toastr -->
     <script src="frontend/assets/js/toastr.min.js"></script>
     <script src="frontend/js/scripts.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- MDB JavaScript -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
+<!--     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js" defer></script> -->
     <!-- Ajax Calls JS -->
      <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <!-- MDB JavaScript -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
+
 
 
 
@@ -73,7 +74,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <!-- Left links -->
         <ul class="navbar-nav me-auto d-flex flex-row mt-3 mt-lg-0">
-          <li class="nav-item text-center mx-2 mx-lg-1">
+          <li class="nav-item text-center mx-2 mx-lg-1" id="nav-dashboard">
             <a class="nav-link" aria-current="page" href="#dashboard">
               <div>
                 <i class="fas fa-home fa-lg mb-1" style="color: #F1E9CF;"></i>
@@ -81,7 +82,7 @@
                 Dashboard
             </a>
           </li>
-          <li class="nav-item text-center mx-2 mx-lg-1">
+          <li class="nav-item text-center mx-2 mx-lg-1" id="nav-browse">
             <a class="nav-link" href="#browse">
               <div>
                 <i class="far fa-solid fa-bag-shopping fa-lg mb-1"></i>
@@ -112,7 +113,7 @@
   
         <!-- Right links -->
         <ul class="navbar-nav ms-auto d-flex flex-row mt-3 mt-lg-0">
-            <li class="nav-item text-center mx-2 mx-lg-1">
+            <li class="nav-item text-center mx-2 mx-lg-1" id="nav-wishlist">
                 <a class="nav-link" href="#wishlist">
                   <div>
                     <i class="fas fa-heart fa-lg mb-1" style="color: #F1E9CF;"></i>
@@ -121,7 +122,7 @@
                   Wishlist
                 </a>
               </li>
-          <li class="nav-item text-center mx-2 mx-lg-1">
+          <li class="nav-item text-center mx-2 mx-lg-1" id="nav-cart">
             <a class="nav-link" href="#cart">
               <div>
                 <i class="fas fa-shopping-cart fa-lg mb-1" style="color: #F1E9CF;"></i>
@@ -155,12 +156,15 @@
         <!-- Right links -->
   
         <!-- Search form -->
-        <form class="d-flex input-group w-auto ms-lg-3 my-3 my-lg-0">
+      <div id="nav-search-wrapper" class="ms-lg-3 my-3 my-lg-0">
+        <form id="nav-search" class="d-flex input-group w-auto ms-lg-3 my-3 my-lg-0">
           <input type="search" class="form-control" placeholder="Search" aria-label="Search" />
           <button type="button" class="btn btn-outline-light" data-mdb-ripple-init data-mdb-ripple-color="dark">
             Search
           </button>
         </form>
+      </div>
+      
         
       </div>
       <!-- Collapsible wrapper -->
@@ -198,13 +202,13 @@
                style="background-color: #4F1F14"
                >
         <!-- Left -->
-        <div class="me-5">
+<!--         <div class="me-5">
           <span>Get connected with us on social networks:</span>
-        </div>
+        </div> -->
         <!-- Left -->
   
         <!-- Right -->
-        <div>
+<!--         <div>
           <a href="" class="text-white me-4">
             <i class="fab fa-facebook-f"></i>
           </a>
@@ -223,7 +227,7 @@
           <a href="" class="text-white me-4">
             <i class="fab fa-github"></i>
           </a>
-        </div>
+        </div> -->
         <!-- Right -->
       </section>
       <!-- Section: Social media -->
@@ -236,23 +240,23 @@
             <!-- Grid column -->
             <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
               <!-- Content -->
-              <h6 style="color: #F1E9CF;" class="text-uppercase fw-bold">Company name</h6>
+              <h6 style="color: #F1E9CF;" class="text-uppercase fw-bold">Cuppa Tea</h6>
 
               <hr
                   class="mb-4 mt-0 d-inline-block mx-auto"
                   style="width: 60px; background-color: #4F1F14; height: 2px"
                   />
               <p>
-                Here you can use rows and columns to organize your footer
-                content. Lorem ipsum dolor sit amet, consectetur adipisicing
-                elit.
+                We are a small business with a dream
+                to bring highest quality tea to your
+                doorstep.
               </p>
             </div>
             <!-- Grid column -->
   
-            <!-- Grid column -->
-            <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-              <!-- Links -->
+
+<!--             <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+
               <h6 style="color: #F1E9CF;" class="text-uppercase fw-bold">Products</h6>
 
               <hr
@@ -272,11 +276,11 @@
                 <a href="#!" class="text-white">Bootstrap Angular</a>
               </p>
             </div>
-            <!-- Grid column -->
+
   
-            <!-- Grid column -->
+
             <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-              <!-- Links -->
+
               <h6 style="color: #F1E9CF;" class="text-uppercase fw-bold">Useful</h6>
 
 
@@ -296,38 +300,50 @@
               <p>
                 <a href="#!" class="text-white">Help</a>
               </p>
+            </div> -->
+
+            <div class="mt-3" style="max-width: 350px; margin-left: auto; margin-right: auto; padding-bottom: 20px;">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2878.794011744945!2d18.309495076659097!3d43.818631941714784!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4758ca0f99d6bf3b%3A0x6f97362d8c61c461!2sInternational%20Burch%20University!5e0!3m2!1sen!2sba!4v1747851503831!5m2!1sen!2sba"
+                width="100%"
+                height="200"
+                style="border:0; border-radius: 10px;"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+              ></iframe>
             </div>
-            <!-- Grid column -->
-  
-            <!-- Grid column -->
+
+
+
             <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-              <!-- Links -->
+
               <h6 style="color: #F1E9CF;" class="text-uppercase fw-bold">Contact</h6>
 
               <hr
                   class="mb-4 mt-0 d-inline-block mx-auto"
                   style="width: 60px; background-color: #53342a; height: 2px"
                   />
-              <p><i class="fas fa-home mr-3" style="color: #F1E9CF;"></i> New York, NY 10012, US</p>
-              <p><i class="fas fa-envelope mr-3" style="color: #F1E9CF;"></i> info@example.com</p>
+              <p><i class="fas fa-home mr-3" style="color: #F1E9CF;"></i> Sarajevo, 71000, Bosnia and Herzegovina</p>
+              <p><i class="fas fa-envelope mr-3" style="color: #F1E9CF;"></i> anja.sehovac@stu.ibu.edu.ba</p>
               <p><i class="fas fa-phone mr-3" style="color: #F1E9CF;"></i> + 01 234 567 88</p>
               <p><i class="fas fa-print mr-3" style="color: #F1E9CF;"></i> + 01 234 567 89</p>
             </div>
-            <!-- Grid column -->
+
           </div>
-          <!-- Grid row -->
+
         </div>
       </section>
-      <!-- Section: Links  -->
+
   
       <!-- Copyright -->
       <div
            class="text-center p-3"
            style="background-color: #4F1F14"
            >
-        © 2020 Copyright:
-        <a class="text-white" href="https://mdbootstrap.com/"
-           >MDBootstrap.com</a
+        © 2025 Copyright:
+        <a class="text-white" href="https://www.ibu.edu.ba//"
+           >IBU</a
           >
       </div>
       <!-- Copyright -->
@@ -340,7 +356,52 @@
     Utils.init_spapp();
 </script>
 
-<script src="frontend/utils/rest_client.js"></script>
+<script>
+  // Adjust dashboard link depending on role
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (user && user.role_id === 2) {
+    const dashboardLink = document.querySelector("#nav-dashboard a");
+    if (dashboardLink) {
+      dashboardLink.setAttribute("href", "#admin_dashboard");
+      dashboardLink.innerHTML = `
+        <div><i class="fas fa-user-shield fa-lg mb-1" style="color: #F1E9CF;"></i></div>
+        Admin Dashboard
+      `;
+    }
+  }
+</script>
+
+
+<!-- <script>
+function updateNavbarVisibility() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isAdmin = user && user.role_id === 2;
+
+  const browse = document.getElementById("nav-browse");
+  const wishlist = document.getElementById("nav-wishlist");
+  const cart = document.getElementById("nav-cart");
+  const searchWrapper = document.getElementById("nav-search-wrapper");
+
+  // Hide for admins, show for others
+  if (browse) browse.style.display = isAdmin ? "none" : "";
+  if (wishlist) wishlist.style.display = isAdmin ? "none" : "";
+  if (cart) cart.style.display = isAdmin ? "none" : "";
+  if (searchWrapper) searchWrapper.style.display = isAdmin ? "none" : "";
+}
+
+// Run once on load
+updateNavbarVisibility();
+
+// Also update after hash change, in case SPA logic requires it
+window.addEventListener("hashchange", updateNavbarVisibility);
+</script> -->
+
+
+
+
+
+
 </body>
 
 </html>

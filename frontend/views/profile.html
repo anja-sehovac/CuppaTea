@@ -6,14 +6,14 @@
 
                     <div class="card-body text-center">
                         <img src= "frontend/assets/images/ava3.webp"
-                            class="rounded-circle img-fluid" style="width: 150px;">
+                            class="rounded-circle img-fluid profile-img" style="width: 150px;">
                         <h5 class="my-3">John Smith</h5>
                         <p class="text-muted mb-4">Role - Customer</p>
                         <div class="d-flex justify-content-center mb-2">
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit_modal">Edit my Profile</button>
                         </div>
                         <div class="d-flex justify-content-center mb-2">
-                            <button type="button" class="btn btn-outline-danger">Delete my Account</button>
+                            <button type="button" id="delete-account-btn" class="btn btn-outline-danger">Delete my Account</button>
                         </div>
                     </div>
                 </div>
@@ -128,7 +128,7 @@
                   <div class="d-flex justify-content-center">
                       <div data-mdb-ripple-init class="btn btn-sm btn-success">
                           <label class="form-label text-white m-1" for="profile_picture">Choose file</label>
-                          <input type="file" class="form-control d-none" id="profile_picture" onchange="displaySelectedImage(event, 'selectedImage')" />
+                          <input type="file" class="form-control d-none" id="profile_picture" name = "file" onchange="displaySelectedImage(event, 'selectedImage')" />
                       </div>
                   </div>
               </div>
@@ -167,10 +167,9 @@
               <label class="form-label" for="edit_address">Address</label>
               <input name="edit_address" id="edit_address" class="form-control form-control-md" value="Bay Area, San Francisco, CA" />
             </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" style="outline-color: #4F1F14;">Close</button> 
-            <button type="button" class="btn" style="background-color: #53342A; color: #FFFFFF;">Save changes</button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" style="outline-color: #4F1F14;">Close</button> 
+                <button type="submit" id = "save-btn" class="btn" style="background-color: #53342A; color: #FFFFFF;">Save changes</button>
             
         </div>
        </form>
@@ -181,8 +180,26 @@
 
 <script>
     RestClient.get("users/current", function(response) {
-        console.log("User Data:", response); // Success callback
+        console.log("User Data:", response);
     }, function(error) {
-        console.error("Error fetching user data:", error); // Error callback
+        console.error("Error fetching user data:", error);
     });
+</script>
+
+<script src="./frontend/services/user-service.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#delete-account-btn").on("click", function () {
+        UserService.deleteAccount();
+     });
+    });
+</script>
+<script>
+  $(document).ready(function () {
+  $("#edit_profile_form").on("submit", function (e) {
+    e.preventDefault(); // Prevent actual form submission
+    UserService.editProfile();
+  });
+});
+
 </script>

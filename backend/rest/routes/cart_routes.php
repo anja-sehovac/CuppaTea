@@ -91,7 +91,8 @@ Flight::group('/cart', function () {
      * )
      */
     Flight::route('GET /', function () {
-        $user_id = Flight::get('user'); 
+        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
+        $user_id = Flight::get('user')->id; 
         $queryParams = Flight::request()->query;
 
         $search = isset($queryParams['search']) ? trim($queryParams['search']) : "";
@@ -137,7 +138,8 @@ Flight::group('/cart', function () {
      * )
      */
     Flight::route('GET /summary', function () {
-        $user_id = Flight::get('user'); 
+        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
+        $user_id = Flight::get('user')->id;
         $summary = Flight::get('cart_service')->get_cart_summary_by_user($user_id);
         MessageHandler::handleServiceResponse($summary);
     });
@@ -196,7 +198,8 @@ Flight::group('/cart', function () {
      * )
      */
     Flight::route('POST /add', function () {
-        $user_id = Flight::get('user');
+        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
+        $user_id = Flight::get('user')->id;
         $data = Flight::request()->data->getData();
         $result = Flight::get('cart_service')->add_to_cart($user_id, $data['product_id']);
         MessageHandler::handleServiceResponse($result, 'Item added to cart');
@@ -241,7 +244,8 @@ Flight::group('/cart', function () {
      * )
      */
     Flight::route('DELETE /remove/@product_id', function ($product_id) {
-        $user_id = Flight::get('user');
+        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
+        $user_id = Flight::get('user')->id;
         $result = Flight::get('cart_service')->remove_from_cart($user_id, $product_id);
         MessageHandler::handleServiceResponse($result, 'Item removed from cart');
     });
@@ -285,7 +289,8 @@ Flight::group('/cart', function () {
      * )
      */
     Flight::route('PUT /update', function () {
-        $user_id = Flight::get('user');
+        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
+        $user_id = Flight::get('user')->id;
         $data = Flight::request()->data->getData();
 
         $result = Flight::get('cart_service')->update_quantity(
@@ -328,7 +333,8 @@ Flight::group('/cart', function () {
      * )
      */
     Flight::route('DELETE /clear', function () {
-        $user_id = Flight::get('user');
+        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
+        $user_id = Flight::get('user')->id;
         $result = Flight::get('cart_service')->clear_cart($user_id);
         MessageHandler::handleServiceResponse($result, 'Cart cleared');
     });

@@ -93,7 +93,8 @@ Flight::group('/wishlist', function () {
      * )
      */
     Flight::route('GET /', function () {
-        $user_id = Flight::get('user'); 
+        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
+        $user_id = Flight::get('user')->id; 
         $queryParams = Flight::request()->query;
 
         $search = isset($queryParams['search']) ? trim($queryParams['search']) : "";
@@ -140,7 +141,8 @@ Flight::group('/wishlist', function () {
      * )
      */
     Flight::route('GET /summary', function () {
-        $user_id = Flight::get('user'); 
+        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
+        $user_id = Flight::get('user')->id; 
         $summary = Flight::get('wishlist_service')->get_wishlist_summary_by_user($user_id);
     
         MessageHandler::handleServiceResponse($summary);
@@ -199,7 +201,8 @@ Flight::group('/wishlist', function () {
      * )
      */
     Flight::route('POST /add', function () {
-        $user_id = Flight::get('user');
+        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
+        $user_id = Flight::get('user')->id;
         $data = Flight::request()->data->getData();
         $result = Flight::get('wishlist_service')->add_to_wishlist($user_id, $data['product_id']);
         MessageHandler::handleServiceResponse($result, 'Item added to wishlist');
@@ -243,7 +246,8 @@ Flight::group('/wishlist', function () {
      * )
      */
     Flight::route('DELETE /remove/@product_id', function ($product_id) {
-        $user_id = Flight::get('user');
+        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
+        $user_id = Flight::get('user')->id;
         $result = Flight::get('wishlist_service')->remove_from_wishlist($user_id, $product_id);
         MessageHandler::handleServiceResponse($result, 'Item removed from wishlist');
     });
@@ -287,7 +291,8 @@ Flight::group('/wishlist', function () {
      * )
      */
     Flight::route('PUT /update', function () {
-        $user_id = Flight::get('user');
+        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
+        $user_id = Flight::get('user')->id;
         $data = Flight::request()->data->getData();
         $result = Flight::get('wishlist_service')->update_quantity($user_id, $data['product_id'], $data['quantity']);
         MessageHandler::handleServiceResponse($result, 'Wishlist updated');
@@ -324,7 +329,8 @@ Flight::group('/wishlist', function () {
      * )
      */
     Flight::route('DELETE /clear', function () {
-        $user_id = Flight::get('user');
+        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
+        $user_id = Flight::get('user')->id;
         $result = Flight::get('wishlist_service')->clear_wishlist($user_id);
         MessageHandler::handleServiceResponse($result, 'Items cleared from wishlist');
     });

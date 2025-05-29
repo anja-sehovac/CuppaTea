@@ -93,14 +93,16 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("hashchange", updateActiveLink);
 });
 
-function display_user_profile() {
+/* function display_user_profile() {
 
     RestClient.get("users/current", function(response) {
         console.log("User Data:", response); // Debugging
   
         // Update Profile Picture (Use default if null)
         let profileImg = document.querySelector("#profile img");
-        profileImg.src = response.image ? response.image : "frontend/assets/images/ava3.webp";
+        profileImg.src = response.image
+    ? "http://localhost/web_project/backend" + response.image
+    : "frontend/assets/images/ava3.webp";
   
         // Update Profile Information in the card
         document.querySelector("#profile h5").textContent = response.name || "N/A";
@@ -125,7 +127,7 @@ function display_user_profile() {
         console.error("Error fetching user data:", error);
     });
   
-  }
+  } */
 
   function displaySelectedImage(event, elementId) {
     const selectedImage = document.getElementById(elementId);
@@ -141,3 +143,37 @@ function display_user_profile() {
         reader.readAsDataURL(fileInput.files[0]);
     }
 }
+
+/* document.querySelector('#edit_profile_form button.btn').addEventListener('click', function () {
+    const formData = new FormData();
+    const imageInput = document.querySelector("#profile_picture");
+
+    if (imageInput.files.length > 0) {
+        formData.append("profile_picture", imageInput.files[0]);
+
+        fetch("http://localhost/web_project/backend/rest/users/upload_image", {
+            method: "POST",
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem("token")
+            },
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === "success") {
+                // Update user image visually
+                document.querySelector("#profile img").src = data.image_url;
+                toastr.success("Profile picture updated!");
+                display_user_profile(); // Refresh user info
+            } else {
+                toastr.error("Image upload failed.");
+            }
+        })
+        .catch(err => {
+            console.error("Upload error:", err);
+            toastr.error("Something went wrong while uploading image.");
+        });
+    } else {
+        toastr.warning("Please choose an image file first.");
+    }
+}); */

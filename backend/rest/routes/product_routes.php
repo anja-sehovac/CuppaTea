@@ -1,5 +1,5 @@
 <?php
- header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: *");
  header("Access-Control-Allow-Methods: GET,PUT,POST,DELETE,PATCH,OPTIONS");
  header("Access-Control-Allow-Headers: Content-Type, Authorization");
  header("Access-Control-Allow-Credentials", "true");
@@ -53,6 +53,7 @@
      * )
      */
      Flight::route('POST /add', function () {
+         Flight::auth_middleware()->authorizeRoles([Roles::ADMIN]);
          $data = Flight::request()->data->getData();
          $product = [
              'name' => $data['name'],
@@ -103,6 +104,7 @@
      * )
      */
      Flight::route('GET /@id', function ($id) {
+        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
         $product = Flight::get('product_service')->get_product_by_id($id);
         MessageHandler::handleServiceResponse($product);
      });
@@ -176,6 +178,7 @@
      * )
      */
      Flight::route('GET /', function () {
+         Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
          $search = Flight::request()->query['search'] ?? null;
          $sort = Flight::request()->query['sort'] ?? null;
          $min_price = Flight::request()->query['min_price'] ?? null;
@@ -187,6 +190,10 @@
          MessageHandler::handleServiceResponse($products);
 
      });
+
+
+
+ 
  
      /**
      * @OA\Delete(
@@ -220,6 +227,7 @@
      * )
      */
      Flight::route('DELETE /delete/@product_id', function ($product_id) {
+        Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
          $product_service = new productService();
          $result = $product_service->delete_product($product_id);
          MessageHandler::handleServiceResponse($result, "You have successfully deleted the product");
@@ -274,10 +282,45 @@
      * )
      */
      Flight::route('PUT /update/@id', function($id) {
+        Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
          $data = Flight::request()->data->getData();
          $product = Flight::get('product_service')->update_product($id, $data);
          MessageHandler::handleServiceResponse($product);
      });
+
+     Flight::route('POST /upload_image/@product_id', function($product_id) {
+    Flight::auth_middleware()->authorizeRoles([Roles::ADMIN]);
+    if (!isset($_FILES['product_image'])) {
+        Flight::halt(400, 'No file uploaded.');
+    }
+
+    $file = $_FILES['product_image'];
+    $allowed = ['image/jpeg', 'image/png', 'image/webp'];
+
+    if (!in_array($file['type'], $allowed)) {
+        Flight::halt(400, 'Only JPG, PNG, or WEBP images are allowed.');
+    }
+
+    $uploads_dir = __DIR__ . '/../../uploads/';
+    $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+    $new_name = uniqid("product_", true) . '.' . $ext;
+    $target_path = $uploads_dir . $new_name;
+
+    if (!move_uploaded_file($file['tmp_name'], $target_path)) {
+        Flight::halt(500, 'Failed to move uploaded file.');
+    }
+
+    // Save image path to product_image table
+    $relative_url = '/uploads/' . $new_name;
+    $product_service = Flight::get('product_service');
+    $result = $product_service->add_product_image([
+        'product_id' => $product_id,
+        'image' => $relative_url
+    ]);
+
+    MessageHandler::handleServiceResponse($result, 'Product image uploaded successfully.');
+});
+
      
  
  });

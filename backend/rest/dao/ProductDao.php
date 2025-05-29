@@ -74,7 +74,7 @@ class ProductDao extends BaseDao {
         return $this->query($query, $params);
     }
     
-    
+
 
     public function update_product($product_id, $product) {
         return $this->update("product", $product_id, $product);
