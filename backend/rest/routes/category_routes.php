@@ -79,10 +79,17 @@
      * )
      */
 
-    Flight::route('GET /category/@name', function($name) {
-        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);     
-        $category = Flight::get('category_service')->get_category_by_name($name);
-        MessageHandler::handleServiceResponse($category);
-    });
+Flight::route('GET /category', function() {
+    Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
+    
+    $name = Flight::request()->query['name'];
+    if (!$name) {
+        Flight::halt(400, 'Category name is required.');
+    }
+
+    $category = Flight::get('category_service')->get_category_by_name($name);
+    MessageHandler::handleServiceResponse($category);
+});
+
 
 });
