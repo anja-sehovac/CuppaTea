@@ -84,6 +84,20 @@ class ProductDao extends BaseDao {
         $this->delete("product", $product_id);
     }
 
+    public function get_images_by_product_id($product_id) {
+    return $this->query("SELECT * FROM product_image WHERE product_id = :product_id", [
+        "product_id" => $product_id
+    ]);
+}
+
+
+
+public function delete_product_image($image_id) {
+    return $this->delete("product_image", $image_id, "id");
+
+
+}
+
 
 
 }

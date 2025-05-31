@@ -45,4 +45,14 @@ class ProductService {
     return $this->productDao->insert('product_image', $data);
 }
 
+public function get_images_by_product_id($product_id) {
+    return $this->productDao->get_images_by_product_id($product_id);
+}
+
+public function delete_product_image($image_id) {
+    return $this->productDao->delete_product_image($image_id);
+}
+
+
+
 }
