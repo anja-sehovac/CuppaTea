@@ -208,7 +208,7 @@
     ProductService.init();
     ProductService.getAllProducts();
 
-    // ✅ Validacija forme
+
     FormValidation.validate(
       "#editItemForm",
       {
@@ -241,7 +241,6 @@
       }
     );
 
-    // ✅ Save dugme – pokreće updateProduct tek na klik submit
     $('#editItemForm').on('submit', function (e) {
       e.preventDefault();
       ProductService.updateProduct();
