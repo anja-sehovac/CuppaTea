@@ -50,20 +50,17 @@ class OrderDao extends BaseDao {
     public function get_all_orders() {
     $query = "
         SELECT 
-            o.id AS order_id,
-            u.name AS user_name,
-            u.email AS user_email,
-            o.date AS order_date,
-            GROUP_CONCAT(p.name ORDER BY op.product_id) AS product_names,
-            GROUP_CONCAT(op.quantity ORDER BY op.product_id) AS quantities,
-            SUM(op.quantity * p.price_each) AS total_price,
-            s.name AS status_name
-        FROM `order` o
-        JOIN `user` u ON o.user_id = u.id
-        JOIN `item_in_order` op ON o.id = op.order_id
-        JOIN `product` p ON op.product_id = p.id
-        JOIN `status` s ON o.status_id = s.id
-        GROUP BY o.id, o.date, s.name
+                o.id AS order_id,
+                o.date AS order_date,
+                GROUP_CONCAT(p.name ORDER BY op.product_id) AS product_names,
+                GROUP_CONCAT(op.quantity ORDER BY op.product_id) AS quantities,
+                SUM(op.quantity * p.price_each) AS total_price,
+                s.name AS status_name
+            FROM `order` o
+            JOIN `item_in_order` op ON o.id = op.order_id
+            JOIN `product` p ON op.product_id = p.id
+            JOIN `status` s ON o.status_id = s.id
+            GROUP BY o.id, o.date, s.name
     ";
 
     return $this->query($query, []);

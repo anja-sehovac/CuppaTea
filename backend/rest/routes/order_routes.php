@@ -233,7 +233,7 @@ Flight::group('/order', function () {
      * )
      */
     Flight::route('DELETE /remove/@order_id', function ($order_id) {
-        Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+        Flight::auth_middleware()->authorizeRoles([Roles::ADMIN]);
         $user_id = Flight::get('user')->id;
         $result = Flight::get('order_service')->delete_order($order_id);
         MessageHandler::handleServiceResponse($result, 'Order removed.');
@@ -272,7 +272,7 @@ Flight::group('/order', function () {
      * )
      */
     Flight::route('PUT /update', function () {
-        Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+        Flight::auth_middleware()->authorizeRoles([Roles::ADMIN]);
         $user_id = Flight::get('user')->id;
         $data = Flight::request()->data->getData();
         $result = Flight::get('order_service')->update_order_status($data["order_id"], $data["new_status_id"]);
@@ -311,6 +311,12 @@ Flight::route('GET /all_orders', function () {
     $orders = Flight::get('order_service')->get_all_orders();
     MessageHandler::handleServiceResponse($orders);
 });
+
+Flight::route('GET /statuses', function () {
+        Flight::auth_middleware()->authorizeRoles([Roles::ADMIN]);
+        $statuses = Flight::get('order_service')->get_order_statuses();
+        MessageHandler::handleServiceResponse($statuses);
+    });
 
 
 });

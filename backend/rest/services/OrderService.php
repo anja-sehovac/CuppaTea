@@ -1,12 +1,15 @@
 <?php
 require_once __DIR__ . "/../dao/OrderDao.php";
+require_once __DIR__ . "/../dao/OrderStatusDao.php";
 
 class OrderService {
     private $orderDao;
+    private $orderStatusDao;
 
     public function __construct()
     {
         $this->orderDao = new OrderDao();
+        $this->orderStatusDao = new OrderStatusDao();
     }
 
     public function add_order($user_id, $order)
@@ -56,5 +59,9 @@ class OrderService {
     public function get_all_orders() {
     return $this->orderDao->get_all_orders();
 }
+public function get_order_statuses()
+    {
+        return $this->orderStatusDao->get_order_statuses();
+    }
 
 }
