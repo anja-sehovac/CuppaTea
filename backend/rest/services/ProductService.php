@@ -17,11 +17,11 @@ class ProductService {
     }
 
     public function get_product_by_id($id) {
-        if (empty($id)) {
-            return "Invalid input";
-        }
-        return $this->productDao->get_product_by_id($id);
-    }
+    $product = $this->productDao->get_product_by_id($id);
+    $product['images'] = $this->productDao->get_images_by_product_id($id); // ← OVDJE DODAJ SLIKE
+    return $product;
+}
+
 
     public function get_all_products($search = null, $sort = null, $min_price = null, $max_price = null, $category_id = null) {
         return $this->productDao->get_all_products($search, $sort, $min_price, $max_price, $category_id);
