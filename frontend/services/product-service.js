@@ -112,7 +112,7 @@ var ProductService = {
             title: 'Actions',
                 render: function (data, type, row, meta) {
                     const rowStr = encodeURIComponent(JSON.stringify(row));
-                    return `<div class="d-flex justify-content-center gap-2 mt-3">
+                    return `<div class="d-flex justify-content-center gap-2 mt-1">
                         <button class="btn btn-sm btn-success save-order" data-bs-target="#editItemModal" onclick="ProductService.openEditModal('${row.id}')">Edit</button>
                         <button class="btn btn-danger" onclick="ProductService.openDeleteConfirmationDialog(decodeURIComponent('${rowStr}'))">Delete</button>
                     </div>

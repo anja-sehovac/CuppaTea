@@ -52,4 +52,9 @@ class OrderService {
         if (empty($order_id)) return "Invalid input";
         return $this->orderDao->delete_order($order_id);
     }
+
+    public function get_all_orders() {
+    return $this->orderDao->get_all_orders();
+}
+
 }
