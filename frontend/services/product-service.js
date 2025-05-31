@@ -1,5 +1,23 @@
 var ProductService = {
   init: function () {
+    ProductService.loadCategories();
+    
+    $('#addItemModal').on('show.bs.modal', function () {
+      const form = document.getElementById('addItemForm');
+      if (form) {
+        form.reset();
+
+        const fileInput = form.querySelector('input[type="file"]');
+        if (fileInput) {
+          fileInput.value = '';
+        }
+
+        const selects = form.querySelectorAll('select');
+        selects.forEach(select => {
+          select.selectedIndex = 0;
+        });
+      }
+    });
     FormValidation.validate(
       "#addItemForm",
       {
@@ -96,7 +114,7 @@ var ProductService = {
                     const rowStr = encodeURIComponent(JSON.stringify(row));
                     return `<div class="d-flex justify-content-center gap-2 mt-3">
                         <button class="btn btn-sm btn-success save-order" data-bs-target="#editItemModal" onclick="ProductService.openEditModal('${row.id}')">Edit</button>
-                        <button class="btn btn-danger" onclick="ProductService.openConfirmationDialog(decodeURIComponent('${rowStr}'))">Delete</button>
+                        <button class="btn btn-danger" onclick="ProductService.openDeleteConfirmationDialog(decodeURIComponent('${rowStr}'))">Delete</button>
                     </div>
                     `;
                 }
@@ -202,7 +220,43 @@ updateProduct: function () {
       Utils.unblock_ui("#editItemModal");
     }
   );
-}
+},
+
+openDeleteConfirmationDialog: function (productStr) {
+  try {
+    const product = JSON.parse(productStr);
+    ProductService.deleteProduct(product.id);
+  } catch (e) {
+    console.error("Invalid product data for deletion:", e);
+    toastr.error("Failed to parse product data.");
+  }},
+
+  deleteProduct: function (productId) {
+  if (!productId) {
+    toastr.error("Product ID not provided.");
+    return;
+  }
+
+  if (!confirm("Are you sure you want to delete this product? This action cannot be undone.")) {
+    return;
+  }
+
+  Utils.block_ui("body"); // You can change this selector to match your UI
+
+  RestClient.delete(
+    `products/delete/${productId}`,
+    {},
+    function (response) {
+      toastr.success("Product has been deleted successfully.");
+      ProductService.getAllProducts();
+    },
+    function (error) {
+      toastr.error("Error deleting the product.");
+    }
+  );
+
+  Utils.unblock_ui("body");
+},
 
 
 

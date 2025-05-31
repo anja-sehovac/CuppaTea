@@ -227,13 +227,12 @@ header("Access-Control-Allow-Origin: *");
      * )
      */
      Flight::route('DELETE /delete/@product_id', function ($product_id) {
-        Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+        Flight::auth_middleware()->authorizeRoles([Roles::ADMIN]);
          $product_service = new productService();
          $result = $product_service->delete_product($product_id);
          MessageHandler::handleServiceResponse($result, "You have successfully deleted the product");
      });
      
-     //milestone5
      /**
      * @OA\Put(
      *     path="/products/update/{id}",
