@@ -282,7 +282,7 @@ header("Access-Control-Allow-Origin: *");
      * )
      */
      Flight::route('PUT /update/@id', function($id) {
-        Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+        Flight::auth_middleware()->authorizeRoles([Roles::ADMIN]);
          $data = Flight::request()->data->getData();
          $product = Flight::get('product_service')->update_product($id, $data);
          MessageHandler::handleServiceResponse($product);
