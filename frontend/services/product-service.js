@@ -76,6 +76,7 @@ var ProductService = {
                 uploaded++;
                 if (uploaded === filesInput.files.length) {
                   toastr.success("Product and all images uploaded.");
+                  
                   $("#addItemModal").modal("hide");
                   ProductService.getAllProducts();
                   Utils.unblock_ui("#addItemForm");
@@ -259,6 +260,7 @@ updateProduct: function () {
         formData,
         function () {
           toastr.success("Product and images updated.");
+          document.getElementById("formFileMultiple1").value = "";
           $("#editItemModal").modal("hide");
           ProductService.getAllProducts();
           Utils.unblock_ui("#editItemModal");
