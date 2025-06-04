@@ -159,3 +159,13 @@
             event.target.classList.add('active');
         }
 </script>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const productId = 25
+/*   const productId = params.get('product_id'); */
+
+  if (productId) {
+    ProductService.loadProductDetailsWithRecommendations(productId);
+  }
+</script>

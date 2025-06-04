@@ -384,5 +384,68 @@ renderCategoryCheckboxes: function () {
     });
   },
 
+  loadProductDetailsWithRecommendations: function (productId) {
+  RestClient.get(`products/${productId}`, function (product) {
+    // Set main image
+    const mainImage = document.getElementById('mainImage');
+    mainImage.src = (product.images && product.images.length > 0)
+      ? 'backend' + product.images[0].image
+      : 'frontend/assets/images/no-image.jpg';
+
+    // Set thumbnails
+    const thumbnailRow = document.querySelector('.thumbnail-row .d-flex');
+    thumbnailRow.innerHTML = '';
+    (product.images && product.images.length > 0 ? product.images : []).forEach((img, i) => {
+      const imgSrc = 'backend' + img.image;
+      thumbnailRow.innerHTML += `
+        <img src="${imgSrc}" alt="Thumbnail ${i+1}" class="thumbnail rounded ${i === 0 ? 'active' : ''}"
+             onclick="changeImage(event, this.src)" style="width: 32%; height: 120px; object-fit: cover; cursor: pointer;">
+      `;
+    });
+
+    // Product details
+    document.querySelector('h2.mb-3').textContent = product.name;
+    document.querySelector('.h4.me-2').textContent = `$${product.price_each}`;
+    document.querySelector('p.mb-4').textContent = product.description || '';
+    document.querySelector('ul').innerHTML = `<li>${product.category}</li>`;
+
+    // Load recommendations
+    ProductService.loadRecommendations(product.category);
+  });
+},
+loadRecommendations: function (categoryName) {
+  RestClient.get(`products`, function (products) {
+    const recContainer = document.querySelector('.row.justify-content-center');
+    recContainer.innerHTML = '';
+
+    const matchingProducts = products.filter(p => p.category_name === categoryName).slice(0, 4);
+
+    matchingProducts.forEach(p => {
+      const imageUrl = (p.images && p.images.length > 0)
+        ? 'backend' + p.images[0].image
+        : 'frontend/assets/images/earl_grey_tea.jpg';
+
+      recContainer.innerHTML += `
+        <div class="col-md-4 col-lg-3 mb-4">
+          <div class="card h-100 text-center" style="border: 1px solid #e0e0e0;">
+            <a href="?product_id=${p.id}">
+              <img src="${imageUrl}" class="card-img-top" alt="${p.name}" style="height: 200px; object-fit: cover; width: 100%;">
+            </a>
+            <div class="card-body">
+              <a href="?product_id=${p.id}" style="text-decoration: none; color: inherit;">
+                <h5 class="card-title">${p.name}</h5>
+              </a>
+              <p class="card-text">$${p.price_each}</p>
+              <button class="btn btn-primary btn-sm">
+                <i class="bi bi-cart-plus"></i> Add to Cart
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+  });
+},
+
   
 };
