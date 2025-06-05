@@ -544,7 +544,41 @@ loadUserProductViews: function () {
     console.error("Error loading product views:", error);
     toastr.error("Failed to load product views.");
   });
+},
+
+loadDashboardSummary: function () {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (!user || !user.id) return;
+
+  // Total Orders
+  RestClient.get("order/count_all", function (res) {
+    document.getElementById("total-orders-count").textContent = res.count || 0;
+  }, function () {
+    console.warn("Failed to load total orders");
+  });
+
+  // Wishlist Items
+  RestClient.get("wishlist/summary", function (res) {
+    document.getElementById("wishlist-count").textContent = res.count || 0;
+  }, function () {
+    console.warn("Failed to load wishlist summary");
+  });
+
+  // Pending Orders
+  RestClient.get("order/count_pending", function (res) {
+    document.getElementById("pending-count").textContent = res.count || 0;
+  }, function () {
+    console.warn("Failed to load pending orders");
+  });
+
+  // Delivered Orders
+  RestClient.get("order/count_delivered", function (res) {
+    document.getElementById("delivered-count").textContent = res.count || 0;
+  }, function () {
+    console.warn("Failed to load delivered orders");
+  });
 }
+
 
 
   

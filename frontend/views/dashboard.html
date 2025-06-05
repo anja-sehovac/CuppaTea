@@ -14,7 +14,7 @@
             <div class="card-body text-center">
                 <i class="fas fa-shopping-bag fa-2x mb-3"style="color: #53342A;"></i>
                 <h5 class="card-title">Total Orders</h5>
-                <h3 class="card-text" style="color: #53342A;">12</h3>
+                <h3 class="card-text" id="total-orders-count" style="color: #53342A;">12</h3>
             </div>
             </div>
         </div>
@@ -23,7 +23,7 @@
             <div class="card-body text-center">
                 <i class="fas fa-heart fa-2x mb-3"style="color: #53342A;"></i>
                 <h5 class="card-title">Wishlist Items</h5>
-                <h3 class="card-text" style="color: #53342A;">5</h3>
+                <h3 class="card-text" id="wishlist-count" style="color: #53342A;">5</h3>
             </div>
             </div>
         </div>
@@ -32,7 +32,7 @@
             <div class="card-body text-center">
                 <i class="fas fa-box fa-2x mb-3"style="color: #53342A;"></i>
                 <h5 class="card-title">Pending</h5>
-                <h3 class="card-text" style="color: #53342A;">2</h3>
+                <h3 class="card-text" id="pending-count" style="color: #53342A;">2</h3>
             </div>
             </div>
         </div>
@@ -41,7 +41,7 @@
             <div class="card-body text-center">
                 <i class="fas fa-truck fa-2x mb-3"style="color: #53342A;"></i>
                 <h5 class="card-title">Delivered</h5>
-                <h3 class="card-text" style="color: #53342A;">10</h3>
+                <h3 class="card-text" id="delivered-count" style="color: #53342A;">10</h3>
             </div>
             </div>
         </div>
@@ -262,4 +262,10 @@
 <script>
   ProductService.renderDashboardProducts();
   ProductService.loadUserProductViews(); 
+</script>
+
+<script>
+  ProductService.renderDashboardProducts();
+  ProductService.loadUserProductViews();
+  ProductService.loadDashboardSummary(); // ✅ Load the summary values
 </script>
