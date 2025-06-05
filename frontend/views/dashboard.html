@@ -124,8 +124,9 @@
     
         <!-- Quick Actions -->
         <div class="row">
+        <!-- Quick Actions (Left side) -->
         <div class="col-md-6 mb-4">
-            <div class="card border-dark" style="height: 300px; background-color: #bfae97;">
+            <div class="card border-dark h-100" style="background-color: #bfae97;">
             <div class="card-header text-white" style="background: linear-gradient(135deg, #53342A, #3E241B);">
                 <h5 class="mb-0">Quick Actions</h5>
             </div>
@@ -144,13 +145,48 @@
             </div>
             </div>
         </div>
+
+        <!-- Product Views (Right side) -->
         <div class="col-md-6 mb-4">
+            <div class="card border-dark h-100" style="background-color: #bfae97;">
+            <div class="card-header text-white" style="background: linear-gradient(135deg, #53342A, #3E241B);">
+                <h5 class="mb-0">Product Views</h5>
+            </div>
+            <div class="card-body">
+                <div style="overflow-x: auto;">
+                <table id="productViewsTable" class="table table-striped table-bordered table-sm" style="width:100%">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- Recently Viewed Products -->
+<!--         <div class="row mt-4"> -->
+        <!--         <div class="col-md-6 mb-4">
+            <div class="card h-100 border-dark" style="background-color: #bfae97;">
+            <div class="card-header text-white" style="background: linear-gradient(135deg, #53342A, #3E241B);">
+                <h5 class="mb-0">Recently Viewed Products</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-center">No recently viewed products.</p>
+            </div>
+            </div>
+        </div> -->
+
+
+
+<!--         <div class="col-md-6 mb-4">
             <div class="card h-100 border-dark" style="background-color: #bfae97;">
             <div class="card-header text-white" style="background: linear-gradient(135deg, #53342A, #3E241B);">
 
                 <h5 class="mb-0">Recently Viewed Products</h5>
             </div>
-            <div class="card-body">
+             -->
+<!--             <div class="card-body">
                 <div class="activity-feed">
 
                     <div class="activity-item d-flex align-items-center mb-3">
@@ -209,7 +245,7 @@
                 </div>
             </div>
 
-        </div>
+        </div> -->
         </div>
         </div>
     </div>
@@ -222,3 +258,8 @@
     <script>
       ProductService.renderDashboardProducts();
     </script>
+
+<script>
+  ProductService.renderDashboardProducts();
+  ProductService.loadUserProductViews(); 
+</script>

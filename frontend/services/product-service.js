@@ -518,6 +518,34 @@ renderDashboardProducts: function(containerSelector = '#dashboard-products-row')
   });
 },
 
+loadUserProductViews: function () {
+  RestClient.get("product_views", function (data) {
+    Utils.datatable(
+      "productViewsTable",
+      [
+        { data: 'product_name', title: 'Product' },
+/*         { data: 'customer_name', title: 'Customer' }, // optional if admin only */
+        { data: 'time', title: 'Viewed At' },
+        {
+          title: 'Actions',
+          render: function (data, type, row) {
+            return `
+              <a href="#product" class="btn btn-sm btn-outline-dark"
+                 onclick="localStorage.setItem('product_id', ${row.product_id})">
+                View Product
+              </a>`;
+          }
+        }
+      ],
+      data,
+      5
+    );
+  }, function (xhr, status, error) {
+    console.error("Error loading product views:", error);
+    toastr.error("Failed to load product views.");
+  });
+}
+
 
   
 };
