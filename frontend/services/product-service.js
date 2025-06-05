@@ -457,16 +457,66 @@ if (productTitle) productTitle.textContent = product.name;
     });
   },
 
-  renderProductDetails: function () {
-    setTimeout(() => {
-      const productId = localStorage.getItem('product_id');
-      if (productId) {
-        ProductService.loadProductDetailsWithRecommendations(productId);
-      } else {
-        console.warn("No product ID found in localStorage.");
+renderProductDetails: function () {
+  setTimeout(() => {
+    const productId = localStorage.getItem('product_id');
+    if (productId) {
+      ProductService.loadProductDetailsWithRecommendations(productId);
+
+      // ✅ Tek sada koristi user i productId
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (user && user.id) {
+        const payload = {
+          customer_id: user.id,
+          product_id: parseInt(productId)
+        };
+
+        RestClient.post("product_views/add", payload, function () {
+          console.log("✔ Product view added.");
+        }, function () {
+          console.warn("⚠ Failed to log product view.");
+        });
       }
-    }, 100); // small delay to let page and embeds load
-}
+    } else {
+      console.warn("No product ID found in localStorage.");
+    }
+  }, 100);
+},
+
+
+renderDashboardProducts: function(containerSelector = '#dashboard-products-row') {
+  RestClient.get('products', function(products) {
+    const row = document.querySelector(containerSelector);
+    if (!row) return;
+
+    row.innerHTML = ''; // Clear only the product cards
+
+    products.slice(0, 3).forEach(product => {
+      const imageUrl = (product.images && product.images.length > 0)
+        ? 'backend/' + product.images[0].image
+        : 'frontend/assets/images/earl_grey_tea.jpg';
+
+      row.innerHTML += `
+        <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
+          <div class="card" style="background: linear-gradient(135deg, #53342A, #3E241B);">
+            <a href="#product" onclick="localStorage.setItem('product_id', ${product.id})">
+              <img src="${imageUrl}" class="card-img-top" alt="${product.name}" />
+            </a>
+            <div class="card-body">
+              <div class="d-flex justify-content-between mb-3" style="color: #eee">
+                <a href="#product" style="text-decoration: none; color: inherit;" onclick="localStorage.setItem('product_id', ${product.id})">
+                  <h5 class="mb-0">${product.name}</h5>
+                </a>
+                <h5 class="text-white mb-0">$${product.price_each}</h5>
+              </div>
+              <p class="small text-white mb-0">${product.category_name || ''}</p>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+  });
+},
 
 
   
