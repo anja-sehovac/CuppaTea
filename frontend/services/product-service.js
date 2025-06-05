@@ -552,28 +552,28 @@ loadDashboardSummary: function () {
 
   // Total Orders
   RestClient.get("order/count_all", function (res) {
-    document.getElementById("total-orders-count").textContent = res.count || 0;
+    document.getElementById("total-orders-count").textContent = res || 0;
   }, function () {
     console.warn("Failed to load total orders");
   });
 
   // Wishlist Items
   RestClient.get("wishlist/summary", function (res) {
-    document.getElementById("wishlist-count").textContent = res.count || 0;
+    document.getElementById("wishlist-count").textContent = res.total_count || 0;
   }, function () {
     console.warn("Failed to load wishlist summary");
   });
 
   // Pending Orders
   RestClient.get("order/count_pending", function (res) {
-    document.getElementById("pending-count").textContent = res.count || 0;
+    document.getElementById("pending-count").textContent = res || 0;
   }, function () {
     console.warn("Failed to load pending orders");
   });
 
   // Delivered Orders
   RestClient.get("order/count_delivered", function (res) {
-    document.getElementById("delivered-count").textContent = res.count || 0;
+    document.getElementById("delivered-count").textContent = res || 0;
   }, function () {
     console.warn("Failed to load delivered orders");
   });
