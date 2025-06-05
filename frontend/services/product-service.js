@@ -577,9 +577,58 @@ loadDashboardSummary: function () {
   }, function () {
     console.warn("Failed to load delivered orders");
   });
-}
+},
 
 
+handleNavbarSearch: function () {
+    const searchInput = document.getElementById("navbar-search-input");
+    const searchBtn = document.getElementById("navbar-search-btn");
+    if (!searchInput || !searchBtn) return;
 
-  
+    // Remove previous listeners to avoid duplicates
+    searchBtn.onclick = null;
+    searchInput.onkeydown = null;
+
+    function doSearch() {
+      const searchTerm = searchInput.value.trim();
+
+      if (window.location.hash === "#browse") {
+        ProductService.renderCategoryCheckboxes();
+        ProductService.loadProducts(searchTerm ? { search: searchTerm } : {});
+      } else {
+        localStorage.setItem("products_search_term", searchTerm);
+        window.location.hash = "#browse";
+      }
+    }
+
+    searchBtn.onclick = doSearch;
+    searchInput.onkeydown = function (e) {
+      if (e.key === "Enter") {
+        doSearch();
+      }
+    };
+  },
+
+  applyStoredSearch: function () {
+    const searchTerm = localStorage.getItem("products_search_term") || "";
+    if (searchTerm) {
+      localStorage.removeItem("products_search_term");
+      ProductService.loadProducts({ search: searchTerm });
+      // Optionally, set the search box value if on products page
+      const searchInput = document.getElementById("navbar-search-input");
+      if (searchInput) searchInput.value = searchTerm;
+    } else {
+      ProductService.loadProducts();
+      // Optionally clear the search box if not searching
+      const searchInput = document.getElementById("navbar-search-input");
+      if (searchInput) searchInput.value = "";
+    }
+  },
+
+  reloadProductsView: function(searchTerm) {
+    ProductService.renderCategoryCheckboxes();
+    ProductService.loadProducts(searchTerm ? { search: searchTerm } : {});
+    const searchInput = document.getElementById("navbar-search-input");
+    if (searchInput) searchInput.value = searchTerm || "";
+  }
 };

@@ -10,17 +10,64 @@ const Utils = {
             view: "profile",
             onReady: function () {
                 UserService.get_user();
+                ProductService.handleNavbarSearch();
             }
           });
           
         app.run();
         
-app.route({
-  view: "product",
-  onReady: function () {
-    ProductService.renderProductDetails();
-  }
-});
+      app.route({
+        view: "product",
+        onReady: function () {
+          ProductService.renderProductDetails();
+          ProductService.handleNavbarSearch();
+        }
+      });
+
+
+        app.route({
+          view: "admin_dashboard",
+          onReady: function () {
+            ProductService.handleNavbarSearch();
+            ProductService.init();
+            ProductService.getAllProducts();
+            OrderService.getAllOrders();
+          }
+        });
+
+        app.route({
+          view: "dashboard",
+          onReady: function () {
+            ProductService.handleNavbarSearch();
+          }
+        });
+
+        app.route({
+          view: "browse",
+          onReady: function () {
+            ProductService.handleNavbarSearch();
+            ProductService.renderCategoryCheckboxes();
+            const searchInput = document.getElementById("navbar-search-input");
+            const searchTerm = localStorage.getItem("products_search_term") || "";
+            localStorage.removeItem("products_search_term");
+            if (searchInput) searchInput.value = searchTerm;
+            ProductService.loadProducts(searchTerm ? { search: searchTerm } : {});
+          }
+        });
+
+        app.route({
+          view: "cart",
+          onReady: function () {
+            ProductService.handleNavbarSearch();
+          }
+        });
+
+        app.route({
+          view: "wishlist",
+          onReady: function () {
+            ProductService.handleNavbarSearch();
+          }
+        });
 
 
     },
