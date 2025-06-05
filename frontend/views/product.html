@@ -46,9 +46,7 @@
                 </button>
             <div class="mt-4">
                 <h5>Category:</h5>
-                <ul>
-                    <li>Herbal tea</li>
-                </ul>
+                <ul id="product-category-list"></ul>
             </div>
         </div>
     </div>
@@ -161,11 +159,25 @@
 </script>
 
 <script>
-  const params = new URLSearchParams(window.location.search);
-  const productId = 25
-/*   const productId = params.get('product_id'); */
+  function loadProductIfAvailable() {
+    const productId = localStorage.getItem('product_id');
 
-  if (productId) {
-    ProductService.loadProductDetailsWithRecommendations(productId);
+    if (productId) {
+      ProductService.loadProductDetailsWithRecommendations(productId);
+    } else {
+      console.warn("No product ID in localStorage");
+      // Optionally: redirect or show a message
+      // window.location.href = 'browse.html';
+    }
   }
+
+  // Load once when the page loads
+  loadProductIfAvailable();
+
+    window.addEventListener('hashchange', function () {
+    if (location.hash === '#products') {
+      loadProductIfAvailable();
+    }
+  });
 </script>
+

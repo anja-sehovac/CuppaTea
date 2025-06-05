@@ -14,6 +14,15 @@ const Utils = {
           });
           
         app.run();
+        
+app.route({
+  view: "product",
+  onReady: function () {
+    ProductService.renderProductDetails();
+  }
+});
+
+
     },
     block_ui: function (element) {
         $(element).block({

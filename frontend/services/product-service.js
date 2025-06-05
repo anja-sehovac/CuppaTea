@@ -341,6 +341,8 @@ loadProducts: function (filters = {}) {
       }
 
       products.forEach(product => {
+        console.log("Product ID:", params[0]);
+
         // Get the first image URL or fallback
         const imageUrl = (product.images && product.images.length > 0)
           ? 'backend/' + product.images[0].image // assuming image paths start with `/uploads/...`
@@ -349,9 +351,11 @@ loadProducts: function (filters = {}) {
           container.innerHTML += `
             <div class="col-lg-4 col-md-6 mb-4">
               <div class="card h-100">
+              <a href="product.html" onclick="event.preventDefault(); localStorage.setItem('product_id', ${product.id}); window.location.href='#product';">
                 <img src="${imageUrl}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="Product Image">
                 <div class="card-body">
                   <h5 class="card-title mb-3">${product.name}</h5>
+                  </a>
                   <p class="mb-1"><strong>Category:</strong> ${product.category_name}</p>
                   <p class="mb-1"><strong>Price:</strong> $${product.price_each}</p>
                   <p class="mb-1"><strong>Quantity:</strong> ${product.quantity}</p>
@@ -385,67 +389,85 @@ renderCategoryCheckboxes: function () {
   },
 
   loadProductDetailsWithRecommendations: function (productId) {
-  RestClient.get(`products/${productId}`, function (product) {
-    // Set main image
-    const mainImage = document.getElementById('mainImage');
-    mainImage.src = (product.images && product.images.length > 0)
-      ? 'backend' + product.images[0].image
-      : 'frontend/assets/images/no-image.jpg';
+    RestClient.get(`products/${productId}`, function (product) {
+      // Set main image
+      const mainImage = document.getElementById('mainImage');
+      mainImage.src = (product.images && product.images.length > 0)
+        ? 'backend' + product.images[0].image
+        : 'frontend/assets/images/cherry_blossom_tea.jpg';
 
-    // Set thumbnails
-    const thumbnailRow = document.querySelector('.thumbnail-row .d-flex');
-    thumbnailRow.innerHTML = '';
-    (product.images && product.images.length > 0 ? product.images : []).forEach((img, i) => {
-      const imgSrc = 'backend' + img.image;
-      thumbnailRow.innerHTML += `
-        <img src="${imgSrc}" alt="Thumbnail ${i+1}" class="thumbnail rounded ${i === 0 ? 'active' : ''}"
-             onclick="changeImage(event, this.src)" style="width: 32%; height: 120px; object-fit: cover; cursor: pointer;">
-      `;
+      // Set thumbnails
+      const thumbnailRow = document.querySelector('.thumbnail-row .d-flex');
+      thumbnailRow.innerHTML = '';
+      (product.images && product.images.length > 0 ? product.images : []).forEach((img, i) => {
+        const imgSrc = 'backend' + img.image;
+        thumbnailRow.innerHTML += `
+          <img src="${imgSrc}" alt="Thumbnail ${i+1}" class="thumbnail rounded ${i === 0 ? 'active' : ''}"
+               onclick="changeImage(event, this.src)" style="width: 32%; height: 120px; object-fit: cover; cursor: pointer;">
+        `;
+      });
+
+      // Product details
+      const productTitle = document.querySelector('.container .row .col-md-6 h2.mb-3');
+if (productTitle) productTitle.textContent = product.name;
+      document.querySelector('.h4.me-2').textContent = `$${product.price_each}`;
+      document.querySelector('p.mb-4').textContent = product.description || '';
+
+      // Set categories
+      const categoryList = document.getElementById('product-category-list');
+      if (categoryList) {
+        categoryList.innerHTML = `<li>${product.category}</li>`;
+      }
+
+      // Load recommendations
+      ProductService.loadRecommendations(product.category);
     });
+  },
+  loadRecommendations: function (categoryName) {
+    RestClient.get(`products`, function (products) {
+      const recContainer = document.querySelector('.row.justify-content-center');
+      recContainer.innerHTML = '';
 
-    // Product details
-    document.querySelector('h2.mb-3').textContent = product.name;
-    document.querySelector('.h4.me-2').textContent = `$${product.price_each}`;
-    document.querySelector('p.mb-4').textContent = product.description || '';
-    document.querySelector('ul').innerHTML = `<li>${product.category}</li>`;
+      const matchingProducts = products.filter(p => p.category_name === categoryName).slice(0, 4);
 
-    // Load recommendations
-    ProductService.loadRecommendations(product.category);
-  });
-},
-loadRecommendations: function (categoryName) {
-  RestClient.get(`products`, function (products) {
-    const recContainer = document.querySelector('.row.justify-content-center');
-    recContainer.innerHTML = '';
+      matchingProducts.forEach(p => {
+        const imageUrl = (p.images && p.images.length > 0)
+          ? 'backend' + p.images[0].image
+          : 'frontend/assets/images/earl_grey_tea.jpg';
 
-    const matchingProducts = products.filter(p => p.category_name === categoryName).slice(0, 4);
-
-    matchingProducts.forEach(p => {
-      const imageUrl = (p.images && p.images.length > 0)
-        ? 'backend' + p.images[0].image
-        : 'frontend/assets/images/earl_grey_tea.jpg';
-
-      recContainer.innerHTML += `
-        <div class="col-md-4 col-lg-3 mb-4">
-          <div class="card h-100 text-center" style="border: 1px solid #e0e0e0;">
-            <a href="?product_id=${p.id}">
-              <img src="${imageUrl}" class="card-img-top" alt="${p.name}" style="height: 200px; object-fit: cover; width: 100%;">
-            </a>
-            <div class="card-body">
-              <a href="?product_id=${p.id}" style="text-decoration: none; color: inherit;">
-                <h5 class="card-title">${p.name}</h5>
+        recContainer.innerHTML += `
+          <div class="col-md-4 col-lg-3 mb-4">
+            <div class="card h-100 text-center" style="border: 1px solid #e0e0e0;">
+              <a href="#product" onclick="localStorage.setItem('product_id', ${p.id})">
+                <img src="${imageUrl}" class="card-img-top" alt="${p.name}" style="height: 200px; object-fit: cover; width: 100%;">
               </a>
-              <p class="card-text">$${p.price_each}</p>
-              <button class="btn btn-primary btn-sm">
-                <i class="bi bi-cart-plus"></i> Add to Cart
-              </button>
+              <div class="card-body">
+                <a href="#product" onclick="localStorage.setItem('product_id', ${p.id})">
+                  <h5 class="card-title">${p.name}</h5>
+                </a>
+                <p class="card-text">$${p.price_each}</p>
+                <button class="btn btn-primary btn-sm">
+                  <i class="bi bi-cart-plus"></i> Add to Cart
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      `;
+        `;
+      });
     });
-  });
-},
+  },
+
+  renderProductDetails: function () {
+    setTimeout(() => {
+      const productId = localStorage.getItem('product_id');
+      if (productId) {
+        ProductService.loadProductDetailsWithRecommendations(productId);
+      } else {
+        console.warn("No product ID found in localStorage.");
+      }
+    }, 100); // small delay to let page and embeds load
+}
+
 
   
 };
