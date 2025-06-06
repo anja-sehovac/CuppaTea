@@ -63,6 +63,7 @@ var WishlistService = {
     });
 
     WishlistService.attachQuantityEvents();
+    WishlistService.loadSummary();
   },
 
   attachQuantityEvents: function () {
@@ -156,7 +157,16 @@ updateQuantity: function (productId, newQuantity) {
   }, function () {
     toastr.error("Failed to update quantity.");
   });
-}
+},
+loadSummary: function () {
+  RestClient.get("wishlist/summary", function (summary) {
+    document.getElementById("wishlist-total-value").textContent = summary.total_value || 0;
+    document.getElementById("wishlist-total-count").textContent = summary.total_count || 0;
+  }, function () {
+    document.getElementById("wishlist-total-value").textContent = 0;
+    document.getElementById("wishlist-total-count").textContent = 0;
+  });
+},
 
 
 
