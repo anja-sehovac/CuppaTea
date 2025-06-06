@@ -60,6 +60,7 @@ const Utils = {
           view: "cart",
           onReady: function () {
             ProductService.handleNavbarSearch();
+            CartService.getCart();
           }
         });
 
