@@ -11,6 +11,7 @@ const Utils = {
             onReady: function () {
                 UserService.get_user();
                 ProductService.handleNavbarSearch();
+                OrderService.getUserOrders();
             }
           });
           

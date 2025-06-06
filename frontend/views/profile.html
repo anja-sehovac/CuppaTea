@@ -73,33 +73,8 @@
                                         <th scope="col">Total</th>
                                         <th scope="col">Status</th>
                                     </tr>
-                                </thead>
-                                <tbody id="recentOrdersTable">
-                                    <tr>
-                                        <td>12</td>
-                                        <td>27.01.2025</td>
-                                        <td>Earl Grey</td>
-                                        <td>2</td>
-                                        <td>$14.20</td>
-                                        <td>Delivered</td>
-                                    </tr>
-                                    <tr>
-                                        <td>13</td>
-                                        <td>06.01.2025</td>
-                                        <td>Chamomile</td>
-                                        <td>1</td>
-                                        <td>$14.20</td>
-                                        <td>Pending</td>
-                                    </tr>
-                                    <tr>
-                                        <td>45</td>
-                                        <td>17.01.2024</td>
-                                        <td>Matcha Green Tea</td>
-                                        <td>2</td>
-                                        <td>$14.20</td>
-                                        <td>Canceled</td>
-                                    </tr>
-                                </tbody>
+                                    </thead>
+                                    <tbody id="recentOrdersTable"></tbody>
                             </table>
                         </div>
                     </div>
@@ -185,8 +160,6 @@
         console.error("Error fetching user data:", error);
     });
 </script>
-
-<script src="./frontend/services/user-service.js"></script>
 <script>
     $(document).ready(function () {
         $("#delete-account-btn").on("click", function () {

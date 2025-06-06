@@ -72,7 +72,14 @@ var RestClient = {
             else toastr.error("Image upload failed.");
         }
     });
-}
+},
+handleErrorResponse: function(jqXHR) {
+    if (jqXHR.status === 401) {
+      window.location.hash = "#error_page"; // Navigate to 401.html section
+    } else {
+      toastr.error(jqXHR.responseJSON.message);
+    }
+  },
 
 
 };
