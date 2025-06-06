@@ -197,14 +197,18 @@ Flight::group('/cart', function () {
      *     )
      * )
      */
-    Flight::route('POST /add', function () {
-        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
-        $user_id = Flight::get('user')->id;
-        $data = Flight::request()->data->getData();
-        $result = Flight::get('cart_service')->add_to_cart($user_id, $data['product_id']);
-        MessageHandler::handleServiceResponse($result, 'Item added to cart');
+Flight::route('POST /add', function () {
+    Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
+    $user_id = Flight::get('user')->id;
+    $data = Flight::request()->data->getData();
 
-    });
+    $product_id = $data['product_id'] ?? null;
+    $quantity = $data['quantity'] ?? 1;
+
+    $result = Flight::get('cart_service')->add_to_cart($user_id, $product_id, $quantity);
+    MessageHandler::handleServiceResponse($result, 'Item added to cart');
+});
+
 
     /**
      * @OA\Delete(

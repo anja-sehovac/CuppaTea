@@ -68,9 +68,14 @@ var WishlistService = {
       WishlistService.clearWishlist();
    });
 
-   document.querySelector(".btn-success").addEventListener("click", function () {
-  WishlistService.addAllToCart();
-  });
+  const addAllToCartBtn = document.querySelector(".btn-success.flex-grow-1");
+
+if (addAllToCartBtn) {
+  addAllToCartBtn.onclick = function () {
+    WishlistService.addAllToCart();
+  };
+}
+
   },
 
   attachQuantityEvents: function () {
@@ -189,15 +194,16 @@ addAllToCart: function () {
         product_id: item.product_id,
         quantity: item.cart_quantity
       }, function () {
-        console.log(`Added ${item.name} to cart`);
+        console.log(`✔ Added ${item.name} to cart`);
       }, function () {
-        toastr.error(`Failed to add ${item.name} to cart.`);
+        toastr.error(`❌ Failed to add ${item.name} to cart.`);
       });
     }
   });
 
   toastr.success("All wishlist items are being added to your cart.");
 }
+
 
 
 

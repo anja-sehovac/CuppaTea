@@ -12,14 +12,14 @@ class CartService {
         $this->productDao = new productDao();
     }
 
-    public function add_to_cart($user_id, $product_id)
-    {
-        if (empty($user_id)) return "Server error";
-        if (empty($product_id)) return "Invalid input";
+public function add_to_cart($user_id, $product_id, $quantity = 1)
+{
+    if (empty($user_id)) return "Server error";
+    if (empty($product_id)) return "Invalid input";
 
-        
-        return $this->cartDao->add_to_cart($user_id, $product_id);
-    }
+    return $this->cartDao->add_to_cart($user_id, $product_id, $quantity);
+}
+
 
     public function remove_from_cart($user_id, $product_id)
     {
