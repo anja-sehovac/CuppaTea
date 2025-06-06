@@ -67,6 +67,7 @@ renderCart: function (items) {
   });
 
   CartService.attachEvents();
+  CartService.loadTotalValue();
 },
 
 
@@ -132,5 +133,12 @@ renderCart: function (items) {
     }, function () {
       toastr.error("Failed to remove item.");
     });
-  }
+  },
+  loadTotalValue: function () {
+    RestClient.get("cart/summary", function (summary) {
+      document.getElementById("cart-total-value").textContent = "$" + summary.total_value || 0;
+    }, function () {
+      document.getElementById("cart-total-value").textContent = 0;
+    });
+  },
 };

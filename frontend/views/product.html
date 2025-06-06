@@ -181,20 +181,4 @@
   });
 </script>
 
-<script>
-  
-  document.addEventListener("DOMContentLoaded", function () {
-    console.log("Wishlist button clicked");
 
-  const wishlistBtn = document.getElementById("addToWishlistBtn");
-
-  if (wishlistBtn) {
-    wishlistBtn.addEventListener("click", function () {
-      const productId = localStorage.getItem("product_id");
-      const quantity = parseInt(document.getElementById("quantity").value);
-      WishlistService.addToWishlist(productId, quantity);
-    });
-  }
-});
-
-</script>

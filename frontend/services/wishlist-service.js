@@ -64,6 +64,13 @@ var WishlistService = {
 
     WishlistService.attachQuantityEvents();
     WishlistService.loadSummary();
+    document.getElementById("clearWishlistBtn").addEventListener("click", function () {
+      WishlistService.clearWishlist();
+   });
+
+   document.querySelector(".btn-success").addEventListener("click", function () {
+  WishlistService.addAllToCart();
+  });
   },
 
   attachQuantityEvents: function () {
@@ -110,9 +117,11 @@ var WishlistService = {
     RestClient.delete("wishlist/clear", {}, function () {
       toastr.success("Wishlist cleared successfully.");
       WishlistService.getWishlist(); // refresh after clear
+      WishlistService.loadSummary();
     }, function () {
       toastr.error("Failed to clear wishlist.");
     });
+
   },
 
   removeItemFromWishlist: function (productId) {
@@ -167,6 +176,29 @@ loadSummary: function () {
     document.getElementById("wishlist-total-count").textContent = 0;
   });
 },
+
+addAllToCart: function () {
+  if (!WishlistService.data || WishlistService.data.length === 0) {
+    toastr.warning("Your wishlist is empty.");
+    return;
+  }
+
+  WishlistService.data.forEach(item => {
+    if (item.product_id && item.cart_quantity) {
+      RestClient.post("cart/add", {
+        product_id: item.product_id,
+        quantity: item.cart_quantity
+      }, function () {
+        console.log(`Added ${item.name} to cart`);
+      }, function () {
+        toastr.error(`Failed to add ${item.name} to cart.`);
+      });
+    }
+  });
+
+  toastr.success("All wishlist items are being added to your cart.");
+}
+
 
 
 

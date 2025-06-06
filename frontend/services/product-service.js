@@ -438,11 +438,13 @@ if (productTitle) productTitle.textContent = product.name;
         recContainer.innerHTML += `
           <div class="col-md-4 col-lg-3 mb-4">
             <div class="card h-100 text-center" style="border: 1px solid #e0e0e0;">
-              <a href="#product" onclick="localStorage.setItem('product_id', ${p.id})">
+              <a href="#product" onclick="localStorage.setItem('product_id', ${p.id}); ProductService.renderProductDetails();">
+
                 <img src="${imageUrl}" class="card-img-top" alt="${p.name}" style="height: 200px; object-fit: cover; width: 100%;">
               </a>
               <div class="card-body">
-                <a href="#product" onclick="localStorage.setItem('product_id', ${p.id})">
+                <a href="#product" onclick="localStorage.setItem('product_id', ${p.id}); ProductService.renderProductDetails();">
+
                   <h5 class="card-title">${p.name}</h5>
                 </a>
                 <p class="card-text">$${p.price_each}</p>
@@ -458,30 +460,42 @@ if (productTitle) productTitle.textContent = product.name;
   },
 
 renderProductDetails: function () {
-  setTimeout(() => {
-    const productId = localStorage.getItem('product_id');
-    if (productId) {
-      ProductService.loadProductDetailsWithRecommendations(productId);
+  const productId = localStorage.getItem('product_id');
 
-      // ✅ Tek sada koristi user i productId
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (user && user.id) {
-        const payload = {
-          customer_id: user.id,
-          product_id: parseInt(productId)
-        };
+  if (productId) {
+    ProductService.loadProductDetailsWithRecommendations(productId);
 
-        RestClient.post("product_views/add", payload, function () {
-          console.log("✔ Product view added.");
-        }, function () {
-          console.warn("⚠ Failed to log product view.");
-        });
-      }
-    } else {
-      console.warn("No product ID found in localStorage.");
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user && user.id) {
+      const payload = {
+        customer_id: user.id,
+        product_id: parseInt(productId)
+      };
+
+      RestClient.post("product_views/add", payload, function () {
+        console.log("✔ Product view added.");
+      }, function () {
+        console.warn("⚠ Failed to log product view.");
+      });
     }
-  }, 100);
+  } else {
+    console.warn("No product ID found in localStorage.");
+  }
+
+  // 🔽 MORA biti ovdje, kada je DOM već učitan
+  const wishlistBtn = document.getElementById("addToWishlistBtn");
+
+  if (wishlistBtn) {
+    wishlistBtn.onclick = function () {
+  const productId = localStorage.getItem("product_id");
+  const quantityInput = document.getElementById("quantity");
+  const quantity = quantityInput ? parseInt(quantityInput.value) : 1;
+  WishlistService.addToWishlist(productId, quantity);
+};
+
+  }
 },
+
 
 
 renderDashboardProducts: function(containerSelector = '#dashboard-products-row') {
