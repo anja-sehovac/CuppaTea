@@ -34,7 +34,7 @@
                     <button class="btn btn-sm btn-success flex-grow-1" style="background-color: #4F625A; border-color: #4F625A;">
                         Add All to Cart
                     </button>
-                    <button class="btn btn-sm btn-outline-danger flex-grow-1">
+                    <button class="btn btn-sm btn-outline-danger flex-grow-1" id="clearWishlistBtn">
                         Clear Wishlist
                     </button>
                 </div>
@@ -107,3 +107,10 @@
 </section>
 
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("clearWishlistBtn").addEventListener("click", function () {
+    WishlistService.clearWishlist();
+  });
+});
+</script>

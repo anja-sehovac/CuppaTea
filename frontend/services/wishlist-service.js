@@ -82,5 +82,16 @@ var WishlistService = {
         }
       });
     });
+  },
+
+  clearWishlist: function () {
+    if (!confirm("Are you sure you want to clear your wishlist?")) return;
+
+    RestClient.delete("wishlist/clear", {}, function () {
+      toastr.success("Wishlist cleared successfully.");
+      WishlistService.getWishlist(); // refresh after clear
+    }, function () {
+      toastr.error("Failed to clear wishlist.");
+    });
   }
 };
