@@ -51,7 +51,7 @@ var WishlistService = {
                 <button class="btn btn-success mb-2 w-100" style="background-color: #4F625A; border-color: #4F625A;">
                   <i class="bi bi-cart-plus"></i> Add to Cart
                 </button>
-                <button class="btn btn-outline-danger w-100">
+                <button class="btn btn-outline-danger w-100" onclick="WishlistService.removeItemFromWishlist(${item.product_id})">
                   <i class="bi bi-trash"></i> Remove
                 </button>
               </div>
@@ -93,5 +93,36 @@ var WishlistService = {
     }, function () {
       toastr.error("Failed to clear wishlist.");
     });
+  },
+
+  removeItemFromWishlist: function (productId) {
+  if (!productId) return;
+
+  if (!confirm("Remove this item from your wishlist?")) return;
+
+  RestClient.delete(`wishlist/remove/${productId}`, {}, function () {
+    WishlistService.getWishlist(); // Refresh UI
+  }, function () {
+    toastr.error("Failed to remove item.");
+  });
+},
+
+
+
+addToWishlist: function (productId, quantity = 1) {
+  if (!productId) {
+    toastr.error("No product selected.");
+    return;
   }
+
+  RestClient.post("wishlist/add", { product_id: productId, quantity: quantity }, function () {
+    toastr.success("Product added to wishlist.");
+  }, function () {
+    toastr.error("Failed to add product to wishlist.");
+  });
+}
+
+
+
+
 };

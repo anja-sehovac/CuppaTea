@@ -200,13 +200,18 @@ Flight::group('/wishlist', function () {
      *     )
      * )
      */
-    Flight::route('POST /add', function () {
-        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
-        $user_id = Flight::get('user')->id;
-        $data = Flight::request()->data->getData();
-        $result = Flight::get('wishlist_service')->add_to_wishlist($user_id, $data['product_id']);
-        MessageHandler::handleServiceResponse($result, 'Item added to wishlist');
-    });
+Flight::route('POST /add', function () {
+    Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
+    $user_id = Flight::get('user')->id;
+    $data = Flight::request()->data->getData();
+
+    $product_id = $data['product_id'] ?? null;
+    $quantity = $data['quantity'] ?? 1;
+
+    $result = Flight::get('wishlist_service')->add_to_wishlist($user_id, $product_id, $quantity);
+    MessageHandler::handleServiceResponse($result, 'Item added to wishlist');
+});
+
 
     /**
      * @OA\Delete(

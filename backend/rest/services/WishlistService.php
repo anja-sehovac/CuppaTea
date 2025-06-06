@@ -12,13 +12,14 @@ class WishlistService {
         $this->productDao = new ProductDao();
     }
 
-    public function add_to_wishlist($user_id, $product_id)
-    {
-        if (empty($user_id)) return "Server error";
-        if (empty($product_id)) return "Invalid input";
+public function add_to_wishlist($user_id, $product_id, $quantity = 1)
+{
+    if (empty($user_id)) return "Server error";
+    if (empty($product_id) || $quantity < 1) return "Invalid input";
 
-        return $this->wishlistDao->add_to_wishlist($user_id, $product_id);
-    }
+    return $this->wishlistDao->add_to_wishlist($user_id, $product_id, $quantity);
+}
+
 
     public function remove_from_wishlist($user_id, $product_id)
     {
