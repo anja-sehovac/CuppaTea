@@ -73,6 +73,7 @@ var WishlistService = {
 if (addAllToCartBtn) {
   addAllToCartBtn.onclick = function () {
     WishlistService.addAllToCart();
+    WishlistService.clearWishlist();
   };
 }
 
