@@ -66,23 +66,42 @@ var WishlistService = {
   },
 
   attachQuantityEvents: function () {
-    document.querySelectorAll('.increase-qty').forEach(button => {
-      button.addEventListener('click', function () {
-        const input = this.parentElement.querySelector('.quantity-input');
-        input.value = parseInt(input.value) + 1;
-      });
-    });
+  document.querySelectorAll('.increase-qty').forEach(button => {
+    button.addEventListener('click', function () {
+      const input = this.parentElement.querySelector('.quantity-input');
+      input.value = parseInt(input.value) + 1;
 
-    document.querySelectorAll('.decrease-qty').forEach(button => {
-      button.addEventListener('click', function () {
-        const input = this.parentElement.querySelector('.quantity-input');
-        let currentValue = parseInt(input.value);
-        if (currentValue > 1) {
-          input.value = currentValue - 1;
-        }
-      });
+      const productId = input.getAttribute('data-product-id');
+      WishlistService.updateQuantity(productId, input.value);
     });
-  },
+  });
+
+  document.querySelectorAll('.decrease-qty').forEach(button => {
+    button.addEventListener('click', function () {
+      const input = this.parentElement.querySelector('.quantity-input');
+      let currentValue = parseInt(input.value);
+      if (currentValue > 1) {
+        input.value = currentValue - 1;
+        const productId = input.getAttribute('data-product-id');
+        WishlistService.updateQuantity(productId, input.value);
+      }
+    });
+  });
+
+  document.querySelectorAll('.quantity-input').forEach(input => {
+    input.addEventListener('change', function () {
+      const productId = input.getAttribute('data-product-id');
+      const newQuantity = parseInt(input.value);
+
+      if (isNaN(newQuantity) || newQuantity < 1) {
+        input.value = 1;
+        toastr.warning("Minimum quantity is 1.");
+      }
+
+      WishlistService.updateQuantity(productId, input.value);
+    });
+  });
+},
 
   clearWishlist: function () {
     if (!confirm("Are you sure you want to clear your wishlist?")) return;
@@ -120,7 +139,25 @@ addToWishlist: function (productId, quantity = 1) {
   }, function () {
     toastr.error("Failed to add product to wishlist.");
   });
+},
+
+updateQuantity: function (productId, newQuantity) {
+  if (!productId || isNaN(newQuantity) || newQuantity < 1) {
+    toastr.error("Invalid quantity.");
+    return;
+  }
+
+  RestClient.put("wishlist/update", {
+    product_id: parseInt(productId),
+    quantity: parseInt(newQuantity)
+  }, function () {
+    toastr.success("Quantity updated.");
+    WishlistService.getWishlist(); // Refresh total and values
+  }, function () {
+    toastr.error("Failed to update quantity.");
+  });
 }
+
 
 
 
