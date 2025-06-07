@@ -52,20 +52,42 @@ header("Access-Control-Allow-Origin: *");
      *     ),
      * )
      */
-     Flight::route('POST /add', function () {
-         Flight::auth_middleware()->authorizeRoles([Roles::ADMIN]);
-         $data = Flight::request()->data->getData();
-         $product = [
-             'name' => $data['name'],
-             'category_id' => $data['category_id'],
-             'quantity' => $data['quantity'],
-             'price_each' => $data['price_each'],
-             'description' => $data['description']
-         ];
-     
-         $inserted_product = Flight::get('product_service')->add_product($product);
-         MessageHandler::handleServiceResponse($inserted_product);
-     });
+    Flight::route('POST /add', function () {
+        Flight::auth_middleware()->authorizeRoles([Roles::ADMIN]);
+        $data = Flight::request()->data->getData();
+
+        $required_fields = ['name', 'category_id', 'quantity', 'price_each', 'description'];
+
+        foreach ($required_fields as $field) {
+            if (!isset($data[$field])) {
+                Flight::halt(400, "Field '$field' is required.");
+            }
+
+            if (is_string($data[$field]) && trim($data[$field]) === '') {
+                Flight::halt(400, "Field '$field' cannot be empty.");
+            }
+        }
+
+        if (!is_numeric($data['quantity']) || intval($data['quantity']) < 0) {
+            Flight::halt(400, "'quantity' must be a non-negative integer.");
+        }
+
+        if (!is_numeric($data['price_each']) || floatval($data['price_each']) <= 0) {
+            Flight::halt(400, "'price_each' must be a positive number.");
+        }
+
+        $product = [
+            'name' => trim($data['name']),
+            'category_id' => intval($data['category_id']),
+            'quantity' => intval($data['quantity']),
+            'price_each' => floatval($data['price_each']),
+            'description' => trim($data['description'])
+        ];
+
+        $inserted_product = Flight::get('product_service')->add_product($product);
+        MessageHandler::handleServiceResponse($inserted_product);
+    });
+
  
      /**
      * @OA\Get(
@@ -280,12 +302,47 @@ header("Access-Control-Allow-Origin: *");
      *     ),
      * )
      */
-     Flight::route('PUT /update/@id', function($id) {
+    Flight::route('PUT /update/@id', function($id) {
         Flight::auth_middleware()->authorizeRoles([Roles::ADMIN]);
-         $data = Flight::request()->data->getData();
-         $product = Flight::get('product_service')->update_product($id, $data);
-         MessageHandler::handleServiceResponse($product);
-     });
+        $data = Flight::request()->data->getData();
+
+        if (!is_numeric($id) || intval($id) <= 0) {
+            Flight::halt(400, "Invalid product ID.");
+        }
+
+        $required_fields = ['name', 'category_id', 'quantity', 'price_each', 'description'];
+
+        foreach ($required_fields as $field) {
+            if (!isset($data[$field])) {
+                Flight::halt(400, "Field '$field' is required.");
+            }
+
+            if (is_string($data[$field]) && trim($data[$field]) === '') {
+                Flight::halt(400, "Field '$field' cannot be empty.");
+            }
+        }
+
+        if (!is_numeric($data['quantity']) || intval($data['quantity']) < 0) {
+            Flight::halt(400, "'quantity' must be a non-negative integer.");
+        }
+
+        if (!is_numeric($data['price_each']) || floatval($data['price_each']) <= 0) {
+            Flight::halt(400, "'price_each' must be a positive number.");
+        }
+
+        // --- Ako sve prođe, ažuriraj proizvod ---
+        $product = [
+            'name' => trim($data['name']),
+            'category_id' => intval($data['category_id']),
+            'quantity' => intval($data['quantity']),
+            'price_each' => floatval($data['price_each']),
+            'description' => trim($data['description'])
+        ];
+
+        $updated_product = Flight::get('product_service')->update_product(intval($id), $product);
+        MessageHandler::handleServiceResponse($updated_product);
+    });
+
 
      Flight::route('POST /upload_image/@product_id', function($product_id) {
     Flight::auth_middleware()->authorizeRoles([Roles::ADMIN]);

@@ -202,12 +202,30 @@ Flight::route('POST /add', function () {
     $user_id = Flight::get('user')->id;
     $data = Flight::request()->data->getData();
 
-    $product_id = $data['product_id'] ?? null;
+    if (!isset($data['product_id'])) {
+        Flight::halt(400, "'product_id' is required.");
+    }
+
+    if (!is_numeric($data['product_id']) || intval($data['product_id']) <= 0) {
+        Flight::halt(400, "'product_id' must be a positive number.");
+    }
+
     $quantity = $data['quantity'] ?? 1;
 
-    $result = Flight::get('cart_service')->add_to_cart($user_id, $product_id, $quantity);
+    if (!is_numeric($quantity) || intval($quantity) <= 0) {
+        Flight::halt(400, "'quantity' must be a positive number.");
+    }
+
+    // --- Sve validno, dodaj u korpu ---
+    $result = Flight::get('cart_service')->add_to_cart(
+        $user_id,
+        intval($data['product_id']),
+        intval($quantity)
+    );
+
     MessageHandler::handleServiceResponse($result, 'Item added to cart');
 });
+
 
 
     /**
@@ -297,14 +315,32 @@ Flight::route('POST /add', function () {
         $user_id = Flight::get('user')->id;
         $data = Flight::request()->data->getData();
 
+        if (!isset($data['product_id'])) {
+            Flight::halt(400, "'product_id' is required.");
+        }
+
+        if (!is_numeric($data['product_id']) || intval($data['product_id']) <= 0) {
+            Flight::halt(400, "'product_id' must be a positive number.");
+        }
+
+        if (!isset($data['quantity'])) {
+            Flight::halt(400, "'quantity' is required.");
+        }
+
+        if (!is_numeric($data['quantity']) || intval($data['quantity']) <= 0) {
+            Flight::halt(400, "'quantity' must be a positive number.");
+        }
+
+        // --- Ako sve prođe ---
         $result = Flight::get('cart_service')->update_quantity(
             $user_id,
-            $data['product_id'] ?? null,
-            $data['quantity'] ?? null
+            intval($data['product_id']),
+            intval($data['quantity'])
         );
 
         MessageHandler::handleServiceResponse($result, 'Cart updated');
     });
+
 
     /**
      * @OA\Delete(

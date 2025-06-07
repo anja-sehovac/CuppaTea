@@ -297,12 +297,31 @@ Flight::group('/order', function () {
      * )
      */
     Flight::route('PUT /update', function () {
-        Flight::auth_middleware()->authorizeRoles([Roles::ADMIN]);
-        $user_id = Flight::get('user')->id;
-        $data = Flight::request()->data->getData();
-        $result = Flight::get('order_service')->update_order_status($data["order_id"], $data["new_status_id"]);
-        MessageHandler::handleServiceResponse($result, 'Order updated');
-    });
+    Flight::auth_middleware()->authorizeRoles([Roles::ADMIN]);
+
+    $user_id = Flight::get('user')->id;
+    $data = Flight::request()->data->getData();
+
+    if (!isset($data["order_id"]) || !isset($data["new_status_id"])) {
+        Flight::halt(400, "Both 'order_id' and 'new_status_id' are required.");
+    }
+
+    if (!is_numeric($data["order_id"]) || intval($data["order_id"]) <= 0) {
+        Flight::halt(400, "'order_id' must be a valid positive number.");
+    }
+
+    if (!is_numeric($data["new_status_id"]) || intval($data["new_status_id"]) <= 0) {
+        Flight::halt(400, "'new_status_id' must be a valid positive number.");
+    }
+
+    $result = Flight::get('order_service')->update_order_status(
+        intval($data["order_id"]),
+        intval($data["new_status_id"])
+    );
+
+    MessageHandler::handleServiceResponse($result, 'Order updated');
+});
+
 
     /**
  * @OA\Get(
