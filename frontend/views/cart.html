@@ -41,21 +41,21 @@
                         <div class="row mb-4">
                           <div class="col-md-6">
                             <div data-mdb-input-init class="form-outline form-white">
-                              <input type="text" id="typeExp" class="form-control form-control-lg" style="background-color: #efe4d4;"
-                                placeholder="Name" size="7" id="exp" minlength="7" maxlength="7"  />
+                              <input type="text" id = "name" class="form-control form-control-lg" style="background-color: #efe4d4;"
+                                placeholder="Name" size="7" id="exp"  />
                               <label class="form-label text-white" for="typeExp">Name</label>
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div data-mdb-input-init class="form-outline form-white">
-                              <input type="text" id="typeText" class="form-control form-control-lg" style="background-color: #efe4d4;"
-                                placeholder="Surname" size="1" minlength="3" maxlength="3"  />
+                              <input type="text"  id="surname" class="form-control form-control-lg" style="background-color: #efe4d4;"
+                                placeholder="Surname" size="1"  />
                               <label class="form-label text-white" for="typeText">Surname</label>
                             </div>
                           </div>
                         </div>
                         <div data-mdb-input-init class="form-outline form-white mb-4" >
-                          <input type="text" id="typeName" class="form-control form-control-lg" siez="17"
+                          <input type="text" id="address" class="form-control form-control-lg" siez="17"
                             placeholder="Address" style="background-color: #efe4d4;"/>
                           <label class="form-label text-white" for="typeName">Address</label>
                         </div>
@@ -63,23 +63,23 @@
                         <div class="row mb-4">
                           <div class="col-md-6">
                             <div data-mdb-input-init class="form-outline form-white">
-                              <input type="text" id="typeExp" class="form-control form-control-lg" style="background-color: #efe4d4;"
-                                placeholder="City" size="7" id="exp" minlength="7" maxlength="7"  />
+                              <input type="text" id="city" class="form-control form-control-lg" style="background-color: #efe4d4;"
+                                placeholder="City" size="7" id="exp"   />
                               <label class="form-label text-white" for="typeExp">City</label>
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div data-mdb-input-init class="form-outline form-white">
-                              <input type="password" id="typeText" class="form-control form-control-lg" style="background-color: #efe4d4;"
-                                placeholder="Country" size="1" minlength="3" maxlength="3"  />
+                              <input type="text" id="country" class="form-control form-control-lg" style="background-color: #efe4d4;"
+                                placeholder="Country" size="1"  />
                               <label class="form-label text-white" for="typeText">Country</label>
                             </div>
                           </div>
                         </div>
   
                         <div data-mdb-input-init class="form-outline form-white mb-4">
-                          <input type="text" id="typeText" class="form-control form-control-lg" siez="17"
-                            placeholder="Phone Number" minlength="19" maxlength="19" style="background-color: #efe4d4;" />
+                          <input type="text" id="phone" class="form-control form-control-lg" siez="17"
+                            placeholder="Phone Number" style="background-color: #efe4d4;" />
                           <label class="form-label text-white" for="typeText">Phone Number</label>
                         </div>
   
@@ -104,13 +104,30 @@
                         <p class="mb-2" id="cart-total-value">$72.00</p>
                       </div>
   
-                      <div class="d-flex justify-content-center">
-                        <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-lg btn-white-custom" style="background-color: #efe4d4; border: 1px solid 53342a;">
-                            <div class="d-flex justify-content-between">
-                                <span> Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></span>
-                            </div>
-                        </button>
-                    </div>
+                      <div class="d-flex justify-content-center gap-3">
+  <!-- Pay with Card -->
+  <button type="button" class="btn btn-lg btn-white-custom"
+          style="background-color: #efe4d4; border: 1px solid #53342a; color: #53342a;"
+          onclick="OrderService.checkout()">
+    <div class="d-flex align-items-center gap-2">
+      <span>Pay with Card</span>
+      <i class="fas fa-credit-card"></i>
+    </div>
+  </button>
+
+  <!-- Pay with PayPal -->
+  <button type="button" class="btn btn-lg"
+          style="background-color: #ffffff; border: 1px solid #000000; color: #000000;"
+          onclick="OrderService.checkout()">
+    <div class="d-flex align-items-center gap-2">
+      <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png"
+           alt="PayPal" width="24" height="24">
+      <span>Pay with PayPal</span>
+    </div>
+  </button>
+</div>
+
+
                     
   
                     </div>

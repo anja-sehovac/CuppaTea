@@ -121,5 +121,81 @@ var OrderService = {
     console.error('Error fetching user orders:', error);
     toastr.error("Failed to load your orders.");
   });
+},
+
+checkout: function () {
+  const name = document.getElementById("name").value.trim();
+  const surname = document.getElementById("surname").value.trim();
+  const address = document.getElementById("address").value.trim();
+  const city = document.getElementById("city").value.trim();
+  const country = document.getElementById("country").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+
+  // Basic validation
+  if (!name || !surname || !address || !city || !country || !phone) {
+    toastr.warning("Please fill in all fields before checkout.");
+    return;
+  }
+
+  const payload = {
+    name: name,
+    surname: surname,
+    address: address,
+    city: city,
+    country: country,
+    phone_number: phone
+  };
+
+  Utils.block_ui("body");
+
+  RestClient.post("order/add", payload,
+    function (response) {
+      toastr.success("Purchase successful!");
+      OrderService.clearCart(); // if you have this function
+      // optionally redirect or refresh cart page
+      OrderService.getUserOrders(); // or custom success handler
+      OrderService.clearCheckoutForm();
+    },
+    function (error) {
+      toastr.error("Failed to complete purchase. Please try again.");
+    }
+  );
+
+  Utils.unblock_ui("body");
+},
+
+clearCart() {
+  Utils.block_ui("body");
+
+  RestClient.delete("cart/clear", {},
+    function (response) {
+      // Backend success → now clear frontend/cart UI
+      localStorage.removeItem("cart");
+      document.getElementById("cartItems").innerHTML = "";
+      document.getElementById("cartItemCount").innerText = "0 items";
+      document.getElementById("cart-total-value").innerText = "$0.00";
+      toastr.success("Cart has been successfully cleared.");
+    },
+    function (error) {
+      toastr.error("Failed to clear cart on server.");
+    }
+  );
+
+  Utils.unblock_ui("body");
+},
+
+clearCheckoutForm: function () {
+  const fields = ["name", "surname", "address", "city", "country", "phone"];
+  fields.forEach(id => {
+    const input = document.getElementById(id);
+    if (input) input.value = "";
+  });
 }
+
+
+
+
+
+
+
 };

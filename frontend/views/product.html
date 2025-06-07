@@ -38,7 +38,7 @@
                 <label for="quantity" class="form-label">Quantity:</label>
                 <input type="number" class="form-control" id="quantity" value="1" min="1" style="width: 80px;">
             </div>
-            <button class="btn btn-primary btn-lg mb-3 me-2">
+            <button class="btn btn-primary btn-lg mb-3 me-2" id = "addToCartBtn">
                     <i class="bi bi-cart-plus"></i> Add to Cart
                 </button>
             <button class="btn btn-outline-secondary btn-lg mb-3" id="addToWishlistBtn">
@@ -57,7 +57,7 @@
 
 <div class="row justify-content-center">
   <!-- Product Card 1 -->
-  <div class="col-md-4 col-lg-3 mb-4">
+  <!-- <div class="col-md-4 col-lg-3 mb-4">
     <div class="card h-100 text-center" style="border: 1px solid #e0e0e0;">
       <a href="#product">
       <img src="/web_project/frontend/assets/images/earl_grey_tea.jpg"
@@ -70,15 +70,15 @@
         <h5 class="card-title">Earl Grey Tea</h5>
       </a>
         <p class="card-text">$12.99</p>
-        <button class="btn btn-primary btn-sm">
+        <button class="btn btn-primary btn-sm" id = "">
           <i class="bi bi-cart-plus"></i> Add to Cart
         </button>
       </div>
     </div>
-  </div>
+  </div> -->
 
 <!-- Product Card 2 -->
-<div class="col-md-4 col-lg-3 mb-4">
+<!-- <div class="col-md-4 col-lg-3 mb-4">
   <div class="card h-100 text-center" style="border: 1px solid #e0e0e0;">
     <a href="#product">
       <img src="/web_project/frontend/assets/images/cherry_blossom_tea.jpg"
@@ -96,10 +96,10 @@
       </button>
     </div>
   </div>
-</div>
+</div> -->
 
 <!-- Product Card 3 -->
-<div class="col-md-4 col-lg-3 mb-4">
+<!-- <div class="col-md-4 col-lg-3 mb-4">
   <div class="card h-100 text-center" style="border: 1px solid #e0e0e0;">
     <a href="#product">
       <img src="/web_project/frontend/assets/images/green.webp"
@@ -117,10 +117,10 @@
       </button>
     </div>
   </div>
-</div>
+</div> -->
 
 <!-- Product Card 4 (duplicate Earl Grey) -->
-<div class="col-md-4 col-lg-3 mb-4">
+<!-- <div class="col-md-4 col-lg-3 mb-4">
   <div class="card h-100 text-center" style="border: 1px solid #e0e0e0;">
     <a href="#product">
       <img src="/web_project/frontend/assets/images/earl_grey_tea.jpg"
@@ -138,7 +138,7 @@
       </button>
     </div>
   </div>
-</div>
+</div> -->
 
 
 
@@ -158,27 +158,5 @@
         }
 </script>
 
-<script>
-  function loadProductIfAvailable() {
-    const productId = localStorage.getItem('product_id');
-
-    if (productId) {
-      ProductService.loadProductDetailsWithRecommendations(productId);
-    } else {
-      console.warn("No product ID in localStorage");
-      // Optionally: redirect or show a message
-      // window.location.href = 'browse.html';
-    }
-  }
-
-  // Load once when the page loads
-  loadProductIfAvailable();
-
-    window.addEventListener('hashchange', function () {
-    if (location.hash === '#products') {
-      loadProductIfAvailable();
-    }
-  });
-</script>
-
+<!--  -->
 

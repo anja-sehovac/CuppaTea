@@ -22,6 +22,44 @@ const Utils = {
         onReady: function () {
           ProductService.renderProductDetails();
           ProductService.handleNavbarSearch();
+
+          // Always reset button listeners to avoid duplicates
+          function resetButtonListeners(id) {
+            const oldBtn = document.getElementById(id);
+            if (!oldBtn) return;
+            const newBtn = oldBtn.cloneNode(true);
+            oldBtn.parentNode.replaceChild(newBtn, oldBtn);
+            return newBtn;
+          }
+
+          // Add to Cart
+          const addToCartBtn = resetButtonListeners("addToCartBtn");
+          if (addToCartBtn) {
+            addToCartBtn.addEventListener("click", function () {
+              const quantity = parseInt(document.getElementById("quantity").value);
+              if (!quantity || quantity < 1) {
+                toastr.warning("Please enter a valid quantity.");
+                return;
+              }
+              CartService.addToCartFromLocal(quantity);
+              $.spapp('navigate', '#cart');
+            });
+          }
+
+          // Add to Wishlist
+          const addToWishlistBtn = resetButtonListeners("addToWishlistBtn");
+          if (addToWishlistBtn) {
+            addToWishlistBtn.addEventListener("click", function () {
+              const quantity = parseInt(document.getElementById("quantity").value);
+              if (!quantity || quantity < 1) {
+                toastr.warning("Please enter a valid quantity.");
+                return;
+              }
+              const productId = localStorage.getItem("product_id");
+              WishlistService.addToWishlist(productId, quantity);
+              $.spapp('navigate', '#wishlist');
+            });
+          }
         }
       });
 
@@ -56,13 +94,23 @@ const Utils = {
           }
         });
 
-        app.route({
-          view: "cart",
-          onReady: function () {
-            ProductService.handleNavbarSearch();
-            CartService.getCart();
-          }
-        });
+app.route({
+  view: "cart",
+  onReady: function () {
+    ProductService.handleNavbarSearch();
+
+    // Wait until #cartItems exists
+    const waitForCartItems = setInterval(() => {
+      const container = document.getElementById("cartItems");
+
+      if (container) {
+        clearInterval(waitForCartItems);
+        CartService.getCart();
+      }
+    }, 50); // check every 50ms
+  }
+});
+
 
         app.route({
           view: "wishlist",

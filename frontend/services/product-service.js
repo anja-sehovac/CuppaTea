@@ -413,14 +413,21 @@ if (productTitle) productTitle.textContent = product.name;
       document.querySelector('.h4.me-2').textContent = `$${product.price_each}`;
       document.querySelector('p.mb-4').textContent = product.description || '';
 
-      // Set categories
+      // Set categories, etc.
       const categoryList = document.getElementById('product-category-list');
       if (categoryList) {
         categoryList.innerHTML = `<li>${product.category}</li>`;
       }
+      document.getElementById("quantity").value = 1;
 
-      // Load recommendations
-      ProductService.loadRecommendations(product.category);
+      // Wait for recommendations container, then load recommendations
+      const waitForRec = setInterval(() => {
+        const recContainer = document.querySelector('.row.justify-content-center');
+        if (recContainer) {
+          clearInterval(waitForRec);
+          ProductService.loadRecommendations(product.category);
+        }
+      }, 10); // check every 50ms, stop when found
     });
   },
   loadRecommendations: function (categoryName) {
@@ -448,9 +455,6 @@ if (productTitle) productTitle.textContent = product.name;
                   <h5 class="card-title">${p.name}</h5>
                 </a>
                 <p class="card-text">$${p.price_each}</p>
-                <button class="btn btn-primary btn-sm">
-                  <i class="bi bi-cart-plus"></i> Add to Cart
-                </button>
               </div>
             </div>
           </div>
@@ -485,7 +489,7 @@ renderProductDetails: function () {
   // 🔽 MORA biti ovdje, kada je DOM već učitan
   const wishlistBtn = document.getElementById("addToWishlistBtn");
 
-  if (wishlistBtn) {
+/*   if (wishlistBtn) {
     wishlistBtn.onclick = function () {
   const productId = localStorage.getItem("product_id");
   const quantityInput = document.getElementById("quantity");
@@ -493,7 +497,7 @@ renderProductDetails: function () {
   WishlistService.addToWishlist(productId, quantity);
 };
 
-  }
+  } */
 },
 
 

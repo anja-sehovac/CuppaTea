@@ -141,4 +141,38 @@ renderCart: function (items) {
       document.getElementById("cart-total-value").textContent = 0;
     });
   },
+
+  addToCart: function (productId, quantity = 1) {
+  if (!productId) {
+    toastr.error("Product ID is missing.");
+    return;
+  }
+
+  if (!quantity || isNaN(quantity) || quantity < 1) {
+    toastr.warning("Invalid quantity. Minimum is 1.");
+    return;
+  }
+
+  RestClient.post("cart/add", {
+    product_id: parseInt(productId),
+    quantity: parseInt(quantity)
+  }, function () {
+    toastr.success("Item added to cart.");
+/*     CartService.getCart();  */// Optional: refresh cart UI immediately
+  }, function () {
+    toastr.error("Failed to add item to cart.");
+  });
+},
+
+addToCartFromLocal: function (quantity = 1) {
+  const productId = localStorage.getItem("product_id");
+
+  if (!productId) {
+    toastr.error("Product ID not found in localStorage.");
+    return;
+  }
+
+  this.addToCart(productId, quantity);
+}
+
 };

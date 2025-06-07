@@ -48,7 +48,9 @@ var WishlistService = {
                 </div>
               </div>
               <div class="col-md-3 col-sm-6">
-                <button class="btn btn-success mb-2 w-100" style="background-color: #4F625A; border-color: #4F625A;">
+                <button class="btn btn-success mb-2 w-100 add-to-cart-btn"
+                        data-product-id="${item.product_id}"
+                        style="background-color: #4F625A; border-color: #4F625A;">
                   <i class="bi bi-cart-plus"></i> Add to Cart
                 </button>
                 <button class="btn btn-outline-danger w-100" onclick="WishlistService.removeItemFromWishlist(${item.product_id})">
@@ -68,14 +70,32 @@ var WishlistService = {
       WishlistService.clearWishlist();
    });
 
-  const addAllToCartBtn = document.querySelector(".btn-success.flex-grow-1");
+      const addAllToCartBtn = document.querySelector(".btn-success.flex-grow-1");
 
-if (addAllToCartBtn) {
-  addAllToCartBtn.onclick = function () {
-    WishlistService.addAllToCart();
-    WishlistService.clearWishlist();
-  };
-}
+    if (addAllToCartBtn) {
+      addAllToCartBtn.onclick = function () {
+        WishlistService.addAllToCart();
+        WishlistService.clearWishlist();
+      };
+    }
+    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+      button.addEventListener('click', function () {
+        const productId = this.getAttribute('data-product-id');
+        const item = WishlistService.data.find(i => i.product_id == productId);
+        const quantity = item && item.cart_quantity ? item.cart_quantity : 1;
+
+        RestClient.post("cart/add", {
+          product_id: productId,
+          quantity: quantity
+        }, function () {
+          toastr.success("Added to cart!");
+          WishlistService.removeItemFromWishlist(productId);
+        }, function () {
+          toastr.error("Failed to add to cart.");
+        });
+      });
+      WishlistService.loadSummary();
+    });
 
   },
 
@@ -203,7 +223,9 @@ addAllToCart: function () {
   });
 
   toastr.success("All wishlist items are being added to your cart.");
-}
+},
+
+
 
 
 
