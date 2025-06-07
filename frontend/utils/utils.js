@@ -12,6 +12,7 @@ const Utils = {
                 UserService.get_user();
                 ProductService.handleNavbarSearch();
                 OrderService.getUserOrders();
+                UserService.updateDashboardLinkBasedOnRole();
             }
           });
           
@@ -20,6 +21,7 @@ const Utils = {
       app.route({
         view: "product",
         onReady: function () {
+          UserService.updateDashboardLinkBasedOnRole();
           ProductService.renderProductDetails();
           ProductService.handleNavbarSearch();
 
@@ -30,6 +32,7 @@ const Utils = {
             const newBtn = oldBtn.cloneNode(true);
             oldBtn.parentNode.replaceChild(newBtn, oldBtn);
             return newBtn;
+            
           }
 
           // Add to Cart
@@ -67,6 +70,7 @@ const Utils = {
         app.route({
           view: "admin_dashboard",
           onReady: function () {
+            UserService.updateDashboardLinkBasedOnRole();
             ProductService.handleNavbarSearch();
             ProductService.init();
             ProductService.getAllProducts();
@@ -77,6 +81,7 @@ const Utils = {
         app.route({
           view: "dashboard",
           onReady: function () {
+            UserService.updateDashboardLinkBasedOnRole();
             ProductService.handleNavbarSearch();
           }
         });
@@ -84,6 +89,7 @@ const Utils = {
         app.route({
           view: "browse",
           onReady: function () {
+            UserService.updateDashboardLinkBasedOnRole();
             ProductService.handleNavbarSearch();
             ProductService.renderCategoryCheckboxes();
             const searchInput = document.getElementById("navbar-search-input");
@@ -94,27 +100,29 @@ const Utils = {
           }
         });
 
-app.route({
-  view: "cart",
-  onReady: function () {
-    ProductService.handleNavbarSearch();
+        app.route({
+          view: "cart",
+          onReady: function () {
+            UserService.updateDashboardLinkBasedOnRole();
+            ProductService.handleNavbarSearch();
 
-    // Wait until #cartItems exists
-    const waitForCartItems = setInterval(() => {
-      const container = document.getElementById("cartItems");
+            // Wait until #cartItems exists
+            const waitForCartItems = setInterval(() => {
+              const container = document.getElementById("cartItems");
 
-      if (container) {
-        clearInterval(waitForCartItems);
-        CartService.getCart();
-      }
-    }, 50); // check every 50ms
-  }
-});
+              if (container) {
+                clearInterval(waitForCartItems);
+                CartService.getCart();
+              }
+            }, 50); // check every 50ms
+          }
+        });
 
 
         app.route({
           view: "wishlist",
           onReady: function () {
+            UserService.updateDashboardLinkBasedOnRole();
             ProductService.handleNavbarSearch();
             WishlistService.getWishlist();
           }
