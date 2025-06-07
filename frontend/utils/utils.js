@@ -103,8 +103,10 @@ const Utils = {
         app.route({
           view: "cart",
           onReady: function () {
+            OrderService.initCheckoutFormValidation();
             UserService.updateDashboardLinkBasedOnRole();
             ProductService.handleNavbarSearch();
+            OrderService.initCheckoutFormValidation();
 
             // Wait until #cartItems exists
             const waitForCartItems = setInterval(() => {

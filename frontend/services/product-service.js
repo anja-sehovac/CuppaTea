@@ -190,6 +190,8 @@ if (data.images && data.images.length > 0) {
 
   ProductService.loadCategories().then(function () {
     ProductService.getProductById(id, function () {
+      // Initialize validation when modal is ready
+      ProductService.initEditFormValidation();
       $('#editItemModal').modal('show');
       Utils.unblock_ui("#editItemModal");
     });
@@ -648,5 +650,46 @@ handleNavbarSearch: function () {
     ProductService.loadProducts(searchTerm ? { search: searchTerm } : {});
     const searchInput = document.getElementById("navbar-search-input");
     if (searchInput) searchInput.value = searchTerm || "";
-  }
+  },
+
+  initEditFormValidation: function () {
+    $("#editItemForm").validate({
+      rules: {
+        name: "required",
+        category_id: "required",
+        quantity: {
+          required: true,
+          digits: true,
+          min: 1
+        },
+        price_each: {
+          required: true,
+          number: true,
+          min: 0.01
+        },
+        description: "required"
+      },
+      messages: {
+        name: "Please enter the product name.",
+        category_id: "Please enter the product category.",
+        quantity: {
+          required: "Please enter the quantity.",
+          digits: "Quantity must be a whole number.",
+          min: "Quantity must be at least 1."
+        },
+        price_each: {
+          required: "Please enter the price.",
+          number: "Price must be a valid number.",
+          min: "Price must be at least 0.01."
+        },
+        description: "Please enter the description."
+      },
+      onfocusout: false,
+      onkeyup: false,
+      submitHandler: function(form, event) {
+        event.preventDefault();
+        ProductService.updateProduct();
+      }
+    });
+  },
 };

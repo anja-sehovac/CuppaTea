@@ -123,7 +123,7 @@ var OrderService = {
   });
 },
 
-checkout: function () {
+checkout: function (paymentMethod) {
   const name = document.getElementById("name").value.trim();
   const surname = document.getElementById("surname").value.trim();
   const address = document.getElementById("address").value.trim();
@@ -190,9 +190,49 @@ clearCheckoutForm: function () {
     const input = document.getElementById(id);
     if (input) input.value = "";
   });
-}
+},
 
+initCheckoutFormValidation: function () {
+  let lastClicked = null;
+  $("#pay-card-btn, #pay-paypal-btn").on("click", function() {
+    lastClicked = this.id;
+  });
 
+  $("#checkout_form").validate({
+    rules: {
+      name: "required",
+      surname: "required",
+      address: "required",
+      city: "required",
+      country: "required",
+      phone: {
+        required: true,
+        minlength: 6
+      }
+    },
+    messages: {
+      name: "Please enter your name.",
+      surname: "Please enter your surname.",
+      address: "Please enter your address.",
+      city: "Please enter your city.",
+      country: "Please enter your country.",
+      phone: {
+        required: "Please enter your phone number.",
+        minlength: "Phone number must be at least 6 digits."
+      }
+    },
+    submitHandler: function(form, event) {
+      event.preventDefault();
+      if (lastClicked === "pay-card-btn") {
+        OrderService.checkout("card");
+      } else if (lastClicked === "pay-paypal-btn") {
+        OrderService.checkout("paypal");
+      } else {
+        toastr.error("Please select a payment method.");
+      }
+    }
+  });
+},
 
 
 
