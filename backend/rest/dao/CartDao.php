@@ -100,7 +100,7 @@ public function add_to_cart($user_id, $product_id, $quantity = 1)
         {
             $query = "SELECT 
                         SUM(c.quantity * p.price_each) AS total_value,
-                        SUM(c.quantity) AS total_count
+                        COUNT(*) AS total_count
                       FROM cart c
                       JOIN product p ON c.product_id = p.id
                       WHERE c.user_id = :user_id";

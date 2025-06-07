@@ -18,7 +18,7 @@ class OrderDao extends BaseDao {
             "country"      => $order["country"],
             "phone_number" => $order["phone_number"],
             "date"         => date("Y-m-d H:i:s"),
-            "status_id"    => 1 // Default status (e.g., "pending")
+            "status_id"    => 2 // Default status (e.g., "pending")
         ];
 
         return $this->insert('`order`', $order_data);

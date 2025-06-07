@@ -91,7 +91,7 @@ public function add_to_wishlist($user_id, $product_id, $quantity = 1)
     {
         $query = "SELECT 
                     SUM(w.quantity * p.price_each) AS total_value,
-                    SUM(p.id) AS total_count
+                    COUNT(*) AS total_count
                   FROM wishlist w
                   JOIN product p ON w.product_id = p.id
                   WHERE w.user_id = :user_id";
