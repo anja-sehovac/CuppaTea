@@ -195,10 +195,11 @@ updateQuantity: function (productId, newQuantity) {
 },
 loadSummary: function () {
   RestClient.get("wishlist/summary", function (summary) {
-    document.getElementById("wishlist-total-value").textContent = summary.total_value || 0;
+    const value = summary.total_value ? Number(summary.total_value).toFixed(2) : "0.00";
+    document.getElementById("wishlist-total-value").textContent = value;
     document.getElementById("wishlist-total-count").textContent = summary.total_count || 0;
   }, function () {
-    document.getElementById("wishlist-total-value").textContent = 0;
+    document.getElementById("wishlist-total-value").textContent = "0.00";
     document.getElementById("wishlist-total-count").textContent = 0;
   });
 },

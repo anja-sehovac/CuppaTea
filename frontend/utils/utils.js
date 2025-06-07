@@ -104,6 +104,7 @@ const Utils = {
           view: "cart",
           onReady: function () {
             OrderService.initCheckoutFormValidation();
+            CartService.loadTotalValue();
             UserService.updateDashboardLinkBasedOnRole();
             ProductService.handleNavbarSearch();
             OrderService.initCheckoutFormValidation();

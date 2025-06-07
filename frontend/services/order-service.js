@@ -6,6 +6,13 @@ var OrderService = {
       OrderService.statusList = statuses; // cache
 
       RestClient.get("order/all_orders", function (data) {
+        // Round total_price to 2 decimals for each order
+        data.forEach(order => {
+          if (order.total_price !== undefined && order.total_price !== null) {
+            order.total_price = Number(order.total_price).toFixed(2);
+          }
+        });
+
         Utils.datatable(
           "ordersTable",
           [
@@ -104,6 +111,13 @@ var OrderService = {
   },
   getUserOrders: function () {
   RestClient.get("order/all", function (data) {
+    // Round total_price to 2 decimals for each order
+    data.forEach(order => {
+      if (order.total_price !== undefined && order.total_price !== null) {
+        order.total_price = Number(order.total_price).toFixed(2);
+      }
+    });
+
     Utils.datatable(
       "dashboard_table1",
       [
@@ -193,6 +207,11 @@ clearCheckoutForm: function () {
 },
 
 initCheckoutFormValidation: function () {
+   if (typeof $.validator !== "undefined" && !$.validator.methods.phonePlusDigits) {
+      $.validator.addMethod("phonePlusDigits", function(value, element) {
+        return this.optional(element) || /^\+\d+$/.test(value);
+      }, "Phone number must start with '+' and contain only digits after it.");
+    }
   let lastClicked = null;
   $("#pay-card-btn, #pay-paypal-btn").on("click", function() {
     lastClicked = this.id;
@@ -207,7 +226,8 @@ initCheckoutFormValidation: function () {
       country: "required",
       phone: {
         required: true,
-        minlength: 6
+        minlength: 6,
+        phonePlusDigits: true
       }
     },
     messages: {
@@ -218,7 +238,8 @@ initCheckoutFormValidation: function () {
       country: "Please enter your country.",
       phone: {
         required: "Please enter your phone number.",
-        minlength: "Phone number must be at least 6 digits."
+        minlength: "Phone number must be at least 6 digits.",
+        phonePlusDigits: "Phone number must start with '+' and contain only digits after it."
       }
     },
     submitHandler: function(form, event) {

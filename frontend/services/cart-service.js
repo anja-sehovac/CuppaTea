@@ -136,9 +136,10 @@ renderCart: function (items) {
   },
   loadTotalValue: function () {
     RestClient.get("cart/summary", function (summary) {
-      document.getElementById("cart-total-value").textContent = "$" + summary.total_value || 0;
+      const value = summary.total_value ? Number(summary.total_value).toFixed(2) : "0.00";
+      document.getElementById("cart-total-value").textContent = "$" + value;
     }, function () {
-      document.getElementById("cart-total-value").textContent = 0;
+      document.getElementById("cart-total-value").textContent = "0.00";
     });
   },
 
