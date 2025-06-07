@@ -195,8 +195,33 @@ Flight::group('/order', function () {
      */
     Flight::route('POST /add', function () {
         Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
+        
         $user_id = Flight::get('user')->id;
         $data = Flight::request()->data->getData();
+
+
+        $required_fields = ['name', 'surname', 'address', 'city', 'country', 'phone_number'];
+
+        foreach ($required_fields as $field) {
+            if (!isset($data[$field])) {
+                Flight::halt(400, "Field '$field' is required.");
+            }
+
+            if (trim($data[$field]) === '') {
+                Flight::halt(400, "Field '$field' cannot be empty.");
+            }
+        }
+        $cart_items = Flight::get('cart_service')->get_cart_by_user($user_id);
+        if (empty($cart_items)) {
+            Flight::halt(400, "Your cart is empty. Please add products before placing an order.");
+        }
+
+        if (!preg_match('/^\+[0-9]+$/', $data['phone_number'])) {
+        Flight::halt(400, "Phone number must start with '+' and contain only digits after it.");
+    }
+
+
+
         $result = Flight::get('order_service')->add_order($user_id, $data);
         MessageHandler::handleServiceResponse($result, 'Purchase made successfully!');
     });
