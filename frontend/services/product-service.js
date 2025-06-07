@@ -422,17 +422,19 @@ if (productTitle) productTitle.textContent = product.name;
 
       // Wait for recommendations container, then load recommendations
       const waitForRec = setInterval(() => {
-        const recContainer = document.querySelector('.row.justify-content-center');
+        const recContainer = document.getElementById('recommendations-row');
         if (recContainer) {
           clearInterval(waitForRec);
           ProductService.loadRecommendations(product.category);
         }
-      }, 10); // check every 50ms, stop when found
+      }, 50);
     });
   },
   loadRecommendations: function (categoryName) {
     RestClient.get(`products`, function (products) {
-      const recContainer = document.querySelector('.row.justify-content-center');
+      const recContainer = document.getElementById('recommendations-row');
+      if (!recContainer) return; // Only render if on product page
+
       recContainer.innerHTML = '';
 
       const matchingProducts = products.filter(p => p.category_name === categoryName).slice(0, 4);
@@ -446,12 +448,10 @@ if (productTitle) productTitle.textContent = product.name;
           <div class="col-md-4 col-lg-3 mb-4">
             <div class="card h-100 text-center" style="border: 1px solid #e0e0e0;">
               <a href="#product" onclick="localStorage.setItem('product_id', ${p.id}); ProductService.renderProductDetails();">
-
                 <img src="${imageUrl}" class="card-img-top" alt="${p.name}" style="height: 200px; object-fit: cover; width: 100%;">
               </a>
               <div class="card-body">
                 <a href="#product" onclick="localStorage.setItem('product_id', ${p.id}); ProductService.renderProductDetails();">
-
                   <h5 class="card-title">${p.name}</h5>
                 </a>
                 <p class="card-text">$${p.price_each}</p>
