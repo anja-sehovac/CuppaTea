@@ -334,6 +334,10 @@ Flight::group('/wishlist', function () {
         if (!is_numeric($data['quantity']) || intval($data['quantity']) <= 0) {
             Flight::halt(400, "'quantity' must be a positive number.");
         }
+        $product_id = intval($data['product_id']);
+        if (!Flight::get('product_service')->product_exists($product_id)) {
+            Flight::halt(400, "Product with ID $product_id does not exist.");
+        }
 
         $result = Flight::get('wishlist_service')->update_quantity(
             $user_id,

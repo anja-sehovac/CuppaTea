@@ -312,6 +312,7 @@ Flight::route('POST /add', function () {
      */
     Flight::route('PUT /update', function () {
         Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
+
         $user_id = Flight::get('user')->id;
         $data = Flight::request()->data->getData();
 
@@ -331,15 +332,18 @@ Flight::route('POST /add', function () {
             Flight::halt(400, "'quantity' must be a positive number.");
         }
 
-        // --- Ako sve prođe ---
-        $result = Flight::get('cart_service')->update_quantity(
-            $user_id,
-            intval($data['product_id']),
-            intval($data['quantity'])
-        );
+        $product_id = intval($data['product_id']);
+        $quantity = intval($data['quantity']);
+
+        if (!Flight::get('product_service')->product_exists($product_id)) {
+            Flight::halt(400, "Product with ID $product_id does not exist.");
+        }
+
+        $result = Flight::get('cart_service')->update_quantity($user_id, $product_id, $quantity);
 
         MessageHandler::handleServiceResponse($result, 'Cart updated');
     });
+
 
 
     /**

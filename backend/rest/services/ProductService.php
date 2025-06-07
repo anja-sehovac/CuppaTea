@@ -33,6 +33,11 @@ class ProductService {
         return $products;
     }
 
+    public function product_exists($product_id) {
+    return $this->productDao->get_product_by_id($product_id) !== null;
+}
+
+
 
     public function update_product($product_id, $product) {
         if (empty($product_id) || empty($product)) {
