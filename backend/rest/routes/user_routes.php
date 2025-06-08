@@ -7,7 +7,9 @@ header("Access-Control-Allow-Credentials", "true"); */
 require_once __DIR__ . '/../services/UserService.php';
 require_once __DIR__ . '/../../utils/MessageHandler.php';
 require_once __DIR__ . '/../../data/roles.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
+use Aws\S3\S3Client;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
@@ -173,7 +175,7 @@ Flight::group('/users', function() {
         MessageHandler::handleServiceResponse($result, "You have successfully deleted the user");
     });
 
-    Flight::route('POST /upload_image', function () {
+/*     Flight::route('POST /upload_image', function () {
     Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
     $user_id = Flight::get('user')->id;
 
@@ -201,7 +203,58 @@ Flight::group('/users', function() {
     Flight::get('user_service')->update_user($user_id, ['image' => $relative_url]);
 
     echo json_encode(['status' => 'success', 'image_url' => $relative_url]);
-});
+}); */
 
+Flight::route('POST /upload_image', function () {
+    Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
+    $user_id = Flight::get('user')->id;
+
+    if (!isset($_FILES['profile_picture'])) {
+        Flight::halt(400, 'No file uploaded.');
+    }
+
+    $file = $_FILES['profile_picture'];
+    $allowed = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!in_array($file['type'], $allowed)) {
+        Flight::halt(400, 'Only JPG, PNG, or WEBP images are allowed.');
+    }
+
+    $bucket = 'cuppatea-uploads';
+$region = 'fra1';
+$endpoint = "https://fra1.digitaloceanspaces.com"; // ✅ FIXED
+
+$s3 = new S3Client([
+    'version' => 'latest',
+    'region'  => $region,
+    'endpoint' => $endpoint,
+    'credentials' => [
+        'key'    => 'DO801T4YF42P8Y7W3686',
+        'secret' => 'Id3nl07Ji3+Q3XUP10twjq2uZEQICP47/6rE7thIn7A',
+    ],
+]);
+
+$ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+$new_name = uniqid("profile_", true) . '.' . $ext;
+$key = "uploads/{$new_name}";
+$url = "https://{$bucket}.{$region}.digitaloceanspaces.com/{$key}";
+
+try {
+    $s3->putObject([
+        'Bucket' => $bucket,
+        'Key'    => $key,
+        'Body'   => fopen($file['tmp_name'], 'rb'),
+        'ACL'    => 'public-read',
+        'ContentType' => $file['type'],
+    ]);
+
+    Flight::get('user_service')->update_user($user_id, ['image' => $url]);
+    echo json_encode(['status' => 'success', 'image_url' => $url]);
+
+} catch (Exception $e) {
+    Flight::halt(500, 'Upload to cloud failed: ' . $e->getMessage());
+}
+
+
+});
 
 });
