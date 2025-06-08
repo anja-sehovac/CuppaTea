@@ -6,7 +6,7 @@ header("Access-Control-Allow-Credentials", "true"); */
 
 require_once __DIR__ . '/../services/UserService.php';
 require_once __DIR__ . '/../../utils/MessageHandler.php';
-require_once __DIR__ . '/../../data/Roles.php';
+require_once __DIR__ . '/../../data/roles.php';
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
