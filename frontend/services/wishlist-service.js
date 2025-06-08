@@ -21,10 +21,16 @@ var WishlistService = {
     }
 
     items.forEach(item => {
-      const imageUrl = (item.images && item.images.length > 0)
+let rawImageUrl = (item.images && item.images.length > 0)
+  ? item.images[0].image
+  : null;
 
-        ? Constants.get_api_base_url() + item.images[0].image
-        : 'assets/images/earl_grey_tea.jpg';
+if (rawImageUrl && rawImageUrl.startsWith("https//")) {
+  rawImageUrl = rawImageUrl.replace("https//", "https://");
+}
+
+const imageUrl = rawImageUrl || 'assets/images/earl_grey_tea.jpg';
+
 
 
       const html = `

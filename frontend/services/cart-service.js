@@ -22,10 +22,19 @@ renderCart: function (items) {
 
   document.getElementById("cartItemCount").textContent = `You have ${items.length} items in your cart`;
 
-  items.forEach(item => {
-    const imageUrl = (item.images && item.images.length > 0)
-      ? Constants.get_api_base_url() + item.images[0].image
-      : 'assets/images/earl_grey_tea.jpg';
+  
+items.forEach(item => {
+  let rawImageUrl = (item.images && item.images.length > 0)
+    ? item.images[0].image
+    : null;
+
+  if (rawImageUrl && rawImageUrl.startsWith("https//")) {
+    rawImageUrl = rawImageUrl.replace("https//", "https://");
+  }
+
+  console.log("Raw Image URL:", rawImageUrl); // Debugging
+
+  const imageUrl = rawImageUrl || 'assets/images/earl_grey_tea.jpg';
 
     const html = `
       <div class="card mb-3">
