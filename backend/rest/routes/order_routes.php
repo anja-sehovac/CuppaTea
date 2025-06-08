@@ -195,8 +195,33 @@ Flight::group('/order', function () {
      */
     Flight::route('POST /add', function () {
         Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
+        
         $user_id = Flight::get('user')->id;
         $data = Flight::request()->data->getData();
+
+
+        $required_fields = ['name', 'surname', 'address', 'city', 'country', 'phone_number'];
+
+        foreach ($required_fields as $field) {
+            if (!isset($data[$field])) {
+                Flight::halt(400, "Field '$field' is required.");
+            }
+
+            if (trim($data[$field]) === '') {
+                Flight::halt(400, "Field '$field' cannot be empty.");
+            }
+        }
+        $cart_items = Flight::get('cart_service')->get_cart_by_user($user_id);
+        if (empty($cart_items)) {
+            Flight::halt(400, "Your cart is empty. Please add products before placing an order.");
+        }
+
+        if (!preg_match('/^\+[0-9]+$/', $data['phone_number'])) {
+        Flight::halt(400, "Phone number must start with '+' and contain only digits after it.");
+    }
+
+
+
         $result = Flight::get('order_service')->add_order($user_id, $data);
         MessageHandler::handleServiceResponse($result, 'Purchase made successfully!');
     });
@@ -233,7 +258,7 @@ Flight::group('/order', function () {
      * )
      */
     Flight::route('DELETE /remove/@order_id', function ($order_id) {
-        Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+        Flight::auth_middleware()->authorizeRoles([Roles::ADMIN]);
         $user_id = Flight::get('user')->id;
         $result = Flight::get('order_service')->delete_order($order_id);
         MessageHandler::handleServiceResponse($result, 'Order removed.');
@@ -272,11 +297,76 @@ Flight::group('/order', function () {
      * )
      */
     Flight::route('PUT /update', function () {
-        Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
-        $user_id = Flight::get('user')->id;
-        $data = Flight::request()->data->getData();
-        $result = Flight::get('order_service')->update_order_status($data["order_id"], $data["new_status_id"]);
-        MessageHandler::handleServiceResponse($result, 'Order updated');
+    Flight::auth_middleware()->authorizeRoles([Roles::ADMIN]);
+
+    $user_id = Flight::get('user')->id;
+    $data = Flight::request()->data->getData();
+
+    if (!isset($data["order_id"]) || !isset($data["new_status_id"])) {
+        Flight::halt(400, "Both 'order_id' and 'new_status_id' are required.");
+    }
+
+    if (!is_numeric($data["order_id"]) || intval($data["order_id"]) <= 0) {
+        Flight::halt(400, "'order_id' must be a valid positive number.");
+    }
+
+    if (!is_numeric($data["new_status_id"]) || intval($data["new_status_id"]) <= 0) {
+        Flight::halt(400, "'new_status_id' must be a valid positive number.");
+    }
+
+    $status = Flight::get('order_service')->get_status_by_id($data["new_status_id"]);
+    if (!$status) {
+        Flight::halt(404, "Status with ID {$data['new_status_id']} does not exist.");
+}
+
+
+    $result = Flight::get('order_service')->update_order_status(
+        intval($data["order_id"]),
+        intval($data["new_status_id"])
+    );
+
+    MessageHandler::handleServiceResponse($result, 'Order updated');
+});
+
+
+    /**
+ * @OA\Get(
+ *     path="/order/all_orders",
+ *     summary="Get all orders for all users (admin only).",
+ *     description="Fetches all orders from all users. Admin only.",
+ *     tags={"Order"},
+ *     security={{"ApiKey": {}}},
+ *     @OA\Response(
+ *         response=200,
+ *         description="List of all orders for all users",
+ *         @OA\JsonContent(type="array", @OA\Items(
+ *             @OA\Property(property="order_id", type="integer", example=1),
+ *             @OA\Property(property="user_name", type="string", example="Ilma"),
+ *             @OA\Property(property="user_email", type="string", example="ilma@gmail.com"),
+ *             @OA\Property(property="order_date", type="string", example="2025-05-30 15:00:00"),
+ *             @OA\Property(property="product_names", type="string", example="Candle,Soap"),
+ *             @OA\Property(property="quantities", type="string", example="2,3"),
+ *             @OA\Property(property="total_price", type="number", example=78.50),
+ *             @OA\Property(property="status_name", type="string", example="Pending")
+ *         ))
+ *     ),
+ *     @OA\Response(
+ *         response=403,
+ *         description="Access denied"
+ *     )
+ * )
+ */
+Flight::route('GET /all_orders', function () {
+    Flight::auth_middleware()->authorizeRoles([Roles::ADMIN]);
+    $orders = Flight::get('order_service')->get_all_orders();
+    MessageHandler::handleServiceResponse($orders);
+});
+
+Flight::route('GET /statuses', function () {
+        Flight::auth_middleware()->authorizeRoles([Roles::ADMIN]);
+        $statuses = Flight::get('order_service')->get_order_statuses();
+        MessageHandler::handleServiceResponse($statuses);
     });
+
 
 });

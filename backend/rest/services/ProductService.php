@@ -17,15 +17,27 @@ class ProductService {
     }
 
     public function get_product_by_id($id) {
-        if (empty($id)) {
-            return "Invalid input";
-        }
-        return $this->productDao->get_product_by_id($id);
-    }
+    $product = $this->productDao->get_product_by_id($id);
+    $product['images'] = $this->productDao->get_images_by_product_id($id); // ← OVDJE DODAJ SLIKE
+    return $product;
+}
+
 
     public function get_all_products($search = null, $sort = null, $min_price = null, $max_price = null, $category_id = null) {
-        return $this->productDao->get_all_products($search, $sort, $min_price, $max_price, $category_id);
+        $products = $this->productDao->get_all_products($search, $sort, $min_price, $max_price, $category_id);
+
+        foreach ($products as &$product) {
+            $product['images'] = $this->productDao->get_images_by_product_id($product['id']);
+        }
+
+        return $products;
     }
+
+    public function product_exists($product_id) {
+    return $this->productDao->get_product_by_id($product_id) !== null;
+}
+
+
 
     public function update_product($product_id, $product) {
         if (empty($product_id) || empty($product)) {
@@ -44,5 +56,15 @@ class ProductService {
     public function add_product_image($data) {
     return $this->productDao->insert('product_image', $data);
 }
+
+public function get_images_by_product_id($product_id) {
+    return $this->productDao->get_images_by_product_id($product_id);
+}
+
+public function delete_product_image($image_id) {
+    return $this->productDao->delete_product_image($image_id);
+}
+
+
 
 }

@@ -91,13 +91,10 @@ var UserService = {
 
         toastr.success("You logged in successfully.");
 
-        if (response.role_id == 2) {
-          window.location.hash = "#profile";
-        } else {
-          window.location.hash = "#admin_dashboard";
-        }
+        window.location.hash = "#profile";
 
         Utils.unblock_ui("#login-form");
+        UserService.updateDashboardLinkBasedOnRole();
       },
       function (error) {
         Utils.unblock_ui("#login-form");
@@ -119,6 +116,7 @@ var UserService = {
         };
 
         UserService.login(loginData);
+        UserService.updateDashboardLinkBasedOnRole();
         },
         function (xhr) {
         Utils.unblock_ui("#signup-form");
@@ -250,7 +248,29 @@ editProfile: function () {
       toastr.error(msg);
     }
   );
+},
+
+updateDashboardLinkBasedOnRole() {
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const dashboardLink = document.querySelector("#nav-dashboard a");
+  if (!dashboardLink) return;
+
+  if (user && user.role_id === 2) {
+    dashboardLink.setAttribute("href", "#admin_dashboard");
+    dashboardLink.innerHTML = `
+      <div><i class="fas fa-user-shield fa-lg mb-1" style="color: #F1E9CF;"></i></div>
+      Admin Dashboard
+    `;
+  } else {
+    dashboardLink.setAttribute("href", "#dashboard");
+    dashboardLink.innerHTML = `
+      <div><i class="fas fa-home fa-lg mb-1" style="color: #F1E9CF;"></i></div>
+      Dashboard
+    `;
+  }
 }
+
 
 
 

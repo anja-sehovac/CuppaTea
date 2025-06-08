@@ -52,20 +52,48 @@ header("Access-Control-Allow-Origin: *");
      *     ),
      * )
      */
-     Flight::route('POST /add', function () {
-         Flight::auth_middleware()->authorizeRoles([Roles::ADMIN]);
-         $data = Flight::request()->data->getData();
-         $product = [
-             'name' => $data['name'],
-             'category_id' => $data['category_id'],
-             'quantity' => $data['quantity'],
-             'price_each' => $data['price_each'],
-             'description' => $data['description']
-         ];
-     
-         $inserted_product = Flight::get('product_service')->add_product($product);
-         MessageHandler::handleServiceResponse($inserted_product);
-     });
+    Flight::route('POST /add', function () {
+        Flight::auth_middleware()->authorizeRoles([Roles::ADMIN]);
+        $data = Flight::request()->data->getData();
+
+        $required_fields = ['name', 'category_id', 'quantity', 'price_each', 'description'];
+
+        foreach ($required_fields as $field) {
+            if (!isset($data[$field])) {
+                Flight::halt(400, "Field '$field' is required.");
+            }
+
+            if (is_string($data[$field]) && trim($data[$field]) === '') {
+                Flight::halt(400, "Field '$field' cannot be empty.");
+            }
+        }
+
+        if (!is_numeric($data['quantity']) || intval($data['quantity']) < 0) {
+            Flight::halt(400, "'quantity' must be a non-negative integer.");
+        }
+
+        if (!is_numeric($data['price_each']) || floatval($data['price_each']) <= 0) {
+            Flight::halt(400, "'price_each' must be a positive number.");
+        }
+
+        $category = Flight::get('category_service')->get_category_by_id($data['category_id']);
+        if (!$category) {
+            Flight::halt(400, "Category with ID {$data['category_id']} does not exist.");
+        }
+
+
+        $product = [
+            'name' => trim($data['name']),
+            'category_id' => intval($data['category_id']),
+            'quantity' => intval($data['quantity']),
+            'price_each' => floatval($data['price_each']),
+            'description' => trim($data['description'])
+        ];
+
+        $inserted_product = Flight::get('product_service')->add_product($product);
+        MessageHandler::handleServiceResponse($inserted_product);
+    });
+
  
      /**
      * @OA\Get(
@@ -227,12 +255,11 @@ header("Access-Control-Allow-Origin: *");
      * )
      */
      Flight::route('DELETE /delete/@product_id', function ($product_id) {
-        Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+        Flight::auth_middleware()->authorizeRoles([Roles::ADMIN]);
          $product_service = new productService();
          $result = $product_service->delete_product($product_id);
          MessageHandler::handleServiceResponse($result, "You have successfully deleted the product");
      });
-     
      
      /**
      * @OA\Put(
@@ -281,12 +308,60 @@ header("Access-Control-Allow-Origin: *");
      *     ),
      * )
      */
-     Flight::route('PUT /update/@id', function($id) {
+    Flight::route('PUT /update/@id', function($id) {
         Flight::auth_middleware()->authorizeRoles([Roles::ADMIN]);
-         $data = Flight::request()->data->getData();
-         $product = Flight::get('product_service')->update_product($id, $data);
-         MessageHandler::handleServiceResponse($product);
-     });
+        $data = Flight::request()->data->getData();
+
+        if (!is_numeric($id) || intval($id) <= 0) {
+            Flight::halt(400, "Invalid product ID.");
+        }
+
+        // ✅ Check if the product exists
+        $existing_product = Flight::get('product_service')->get_product_by_id($id);
+        if (!$existing_product) {
+            Flight::halt(404, "Product not found.");
+        }
+
+        $required_fields = ['name', 'category_id', 'quantity', 'price_each', 'description'];
+
+        foreach ($required_fields as $field) {
+            if (!isset($data[$field])) {
+                Flight::halt(400, "Field '$field' is required.");
+            }
+
+            if (is_string($data[$field]) && trim($data[$field]) === '') {
+                Flight::halt(400, "Field '$field' cannot be empty.");
+            }
+        }
+
+        if (!is_numeric($data['quantity']) || intval($data['quantity']) < 0) {
+            Flight::halt(400, "'quantity' must be a non-negative integer.");
+        }
+
+        if (!is_numeric($data['price_each']) || floatval($data['price_each']) <= 0) {
+            Flight::halt(400, "'price_each' must be a positive number.");
+        }
+
+        $category = Flight::get('category_service')->get_category_by_id($data['category_id']);
+        if (!$category) {
+            Flight::halt(400, "Category with ID {$data['category_id']} does not exist.");
+        }
+
+
+        // --- If all checks pass, update the product ---
+        $product = [
+            'name' => trim($data['name']),
+            'category_id' => intval($data['category_id']),
+            'quantity' => intval($data['quantity']),
+            'price_each' => floatval($data['price_each']),
+            'description' => trim($data['description'])
+        ];
+
+        $updated_product = Flight::get('product_service')->update_product(intval($id), $product);
+        MessageHandler::handleServiceResponse($updated_product);
+    });
+
+
 
      Flight::route('POST /upload_image/@product_id', function($product_id) {
     Flight::auth_middleware()->authorizeRoles([Roles::ADMIN]);
@@ -320,6 +395,65 @@ header("Access-Control-Allow-Origin: *");
 
     MessageHandler::handleServiceResponse($result, 'Product image uploaded successfully.');
 });
+
+Flight::route('POST /product_images/@product_id', function($product_id) {
+    Flight::auth_middleware()->authorizeRoles([Roles::ADMIN]);
+
+    $product_service = Flight::get('product_service');
+
+    $existingImageIds = json_decode(Flight::request()->data['existingImageIds'] ?? '[]');
+
+    if (!is_array($existingImageIds)) {
+        Flight::halt(400, 'Invalid image ID list.');
+    }
+
+    // 1. OBRIŠI slike koje nisu u listi
+    $allImages = $product_service->get_images_by_product_id($product_id);
+    foreach ($allImages as $img) {
+        if (!in_array($img['id'], $existingImageIds)) {
+            // Obrisi fizičku sliku
+            $file_path = __DIR__ . '/../../' . ltrim($img['image'], '/');
+            if (file_exists($file_path)) {
+                unlink($file_path);
+            }
+            // Obrisi iz baze
+            $product_service->delete_product_image($img['id']);
+        }
+    }
+
+    // === OVDJE UBACI TAJ KOD ZA DODAVANJE NOVIH SLIKA ===
+    if (isset($_FILES['new_images'])) {
+        $newImages = $_FILES['new_images'];
+
+        // Ako je poslana samo jedna slika, pretvori je u array
+        $isSingle = !is_array($newImages['tmp_name']);
+        $fileCount = $isSingle ? 1 : count($newImages['tmp_name']);
+
+        for ($i = 0; $i < $fileCount; $i++) {
+            $tmpName = $isSingle ? $newImages['tmp_name'] : $newImages['tmp_name'][$i];
+            $fileType = $isSingle ? $newImages['type'] : $newImages['type'][$i];
+            $fileName = $isSingle ? $newImages['name'] : $newImages['name'][$i];
+
+            $allowed = ['image/jpeg', 'image/png', 'image/webp'];
+            if (!in_array($fileType, $allowed)) continue;
+
+            $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+            $new_name = uniqid("product_", true) . '.' . $ext;
+            $target_path = __DIR__ . '/../../uploads/' . $new_name;
+
+            if (move_uploaded_file($tmpName, $target_path)) {
+                $relative_url = '/uploads/' . $new_name;
+                $product_service->add_product_image([
+                    'product_id' => $product_id,
+                    'image' => $relative_url
+                ]);
+            }
+        }
+    }
+
+    Flight::json(["message" => "Product images updated successfully."]);
+});
+
 
      
  

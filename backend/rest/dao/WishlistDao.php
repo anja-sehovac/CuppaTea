@@ -7,25 +7,25 @@ class WishlistDao extends BaseDao {
         parent::__construct('wishlist');
     }
 
-    public function add_to_wishlist($user_id, $product_id)
-    {
-        $wishlist_item = $this->query_unique(
-            "SELECT * FROM wishlist WHERE user_id = :user_id AND product_id = :product_id",
-            ["user_id" => $user_id, "product_id" => $product_id]
-        );
+public function add_to_wishlist($user_id, $product_id, $quantity = 1)
+{
+    $wishlist_item = $this->query_unique(
+        "SELECT * FROM wishlist WHERE user_id = :user_id AND product_id = :product_id",
+        ["user_id" => $user_id, "product_id" => $product_id]
+    );
 
-        if ($wishlist_item) {
-            $new_quantity = $wishlist_item['quantity'] + 1;
-            $this->update_quantity($user_id, $product_id, $new_quantity);
-
-        } else {
-            $this->insert("wishlist", [
-                "user_id" => $user_id,
-                "product_id" => $product_id,
-                "quantity" => 1
-            ]);
-        }
+    if ($wishlist_item) {
+        $new_quantity = $wishlist_item['quantity'] + $quantity;
+        $this->update_quantity($user_id, $product_id, $new_quantity);
+    } else {
+        $this->insert("wishlist", [
+            "user_id" => $user_id,
+            "product_id" => $product_id,
+            "quantity" => $quantity
+        ]);
     }
+}
+
 
     public function remove_from_wishlist($user_id, $product_id)
     {
@@ -91,7 +91,7 @@ class WishlistDao extends BaseDao {
     {
         $query = "SELECT 
                     SUM(w.quantity * p.price_each) AS total_value,
-                    SUM(w.quantity) AS total_count
+                    COUNT(*) AS total_count
                   FROM wishlist w
                   JOIN product p ON w.product_id = p.id
                   WHERE w.user_id = :user_id";
