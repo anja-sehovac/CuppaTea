@@ -165,10 +165,16 @@ var UserService = {
         console.log("User Data:", response); // Debugging
   
         // Update Profile Picture (Use default if null)
-        let profileImg = document.querySelector("#profile img");
-        profileImg.src = response.image
-    ? Constants.get_api_base_url() + response.image
-    : "assets/images/ava3.webp";
+// Fix invalid protocol if present
+let profileImg = document.querySelector("#profile img");
+let rawImageUrl = response.image;
+if (rawImageUrl && rawImageUrl.startsWith("https//")) {
+  rawImageUrl = rawImageUrl.replace("https//", "https://");
+}
+console.log("Raw Image URL:", rawImageUrl); // Debugging
+
+profileImg.src = rawImageUrl || "assets/images/ava3.webp";
+
   
         // Update Profile Information in the card
         document.querySelector("#profile h5").textContent = response.name || "N/A";
