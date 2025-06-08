@@ -1,4 +1,5 @@
 <?php
+header("Access-Control-Allow-Origin: https://cuppatea-frontend-gjxs4.ondigitalocean.app");
 
 require_once __DIR__ . '/../services/UserService.php';
 require_once __DIR__ . '/../../utils/MessageHandler.php';
