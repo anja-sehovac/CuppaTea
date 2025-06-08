@@ -24,7 +24,7 @@ renderCart: function (items) {
 
   items.forEach(item => {
     const imageUrl = (item.images && item.images.length > 0)
-      ? '../backend' + item.images[0].image
+      ? Constants.get_api_base_url() + item.images[0].image
       : 'assets/images/earl_grey_tea.jpg';
 
     const html = `
