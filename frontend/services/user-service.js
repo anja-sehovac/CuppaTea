@@ -165,15 +165,15 @@ var UserService = {
         console.log("User Data:", response); // Debugging
   
         // Update Profile Picture (Use default if null)
-// Fix invalid protocol if present
-let profileImg = document.querySelector("#profile img");
-let rawImageUrl = response.image;
-if (rawImageUrl && rawImageUrl.startsWith("https//")) {
-  rawImageUrl = rawImageUrl.replace("https//", "https://");
-}
-console.log("Raw Image URL:", rawImageUrl); // Debugging
+    // Fix invalid protocol if present
+    let profileImg = document.querySelector("#profile img");
+    let rawImageUrl = response.image;
+    if (rawImageUrl && rawImageUrl.startsWith("https//")) {
+      rawImageUrl = rawImageUrl.replace("https//", "https://");
+    }
+    console.log("Raw Image URL:", rawImageUrl); // Debugging
 
-profileImg.src = rawImageUrl || "assets/images/ava3.webp";
+    profileImg.src = rawImageUrl || "assets/images/ava3.webp";
 
   
         // Update Profile Information in the card
