@@ -45,33 +45,35 @@ class ProductDao extends BaseDao {
         // Filter by name (search)
         if ($search) {
             $query .= " AND p.name LIKE :search";
-            $params['search'] = "%$search%"; // Partial match
+            $params['search'] = "%$search%";
         }
     
         // Filter by price range
-        if ($min_price !== null) {
+        if ($min_price !== null && $min_price !== '') {
             $query .= " AND p.price_each >= :min_price";
             $params['min_price'] = $min_price;
         }
-        if ($max_price !== null) {
+        if ($max_price !== null && $max_price !== '') {
             $query .= " AND p.price_each <= :max_price";
             $params['max_price'] = $max_price;
         }
     
         // Filter by category
-        if ($category_id !== null) {
-            // Check if it's a comma-separated list (e.g., "1,2,3")
+        if ($category_id !== null && $category_id !== '') {
             if (str_contains($category_id, ',')) {
                 $ids = array_map('intval', explode(',', $category_id));
-                $placeholders = implode(',', array_fill(0, count($ids), '?'));
-                $query .= " AND p.category_id IN ($placeholders)";
-                $params = array_merge($params, $ids); // Add each ID to params
+                $placeholders = [];
+                foreach ($ids as $index => $id) {
+                    $ph = ":cat_id_$index";
+                    $placeholders[] = $ph;
+                    $params[$ph] = $id;
+                }
+                $query .= " AND p.category_id IN (" . implode(',', $placeholders) . ")";
             } else {
-                $query .= " AND p.category_id = ?";
-                $params[] = (int)$category_id;
+                $query .= " AND p.category_id = :category_id";
+                $params['category_id'] = (int)$category_id;
             }
         }
-
     
         // Sorting
         if ($sort === 'price_asc') {

@@ -138,17 +138,16 @@ var WishlistService = {
 },
 
   clearWishlist: function () {
-    if (!confirm("Are you sure you want to clear your wishlist?")) return;
+  if (!confirm("Are you sure you want to clear your wishlist?")) return;
 
-    RestClient.delete("wishlist/clear", {}, function () {
-      toastr.success("Wishlist cleared successfully.");
-      WishlistService.getWishlist(); // refresh after clear
-      WishlistService.loadSummary();
-    }, function () {
-      toastr.error("Failed to clear wishlist.");
-    });
-
-  },
+  RestClient.delete("wishlist/clear", {}, function () {
+    toastr.success("Wishlist cleared successfully.");
+    WishlistService.getWishlist(); // refresh after clear
+    WishlistService.loadSummary();
+  }, function () {
+    toastr.error("Failed to clear wishlist.");
+  });
+},
 
   removeItemFromWishlist: function (productId) {
   if (!productId) return;
@@ -156,7 +155,7 @@ var WishlistService = {
   if (!confirm("Remove this item from your wishlist?")) return;
 
   RestClient.delete(`wishlist/remove/${productId}`, {}, function () {
-    WishlistService.getWishlist(); // Refresh UI
+    WishlistService.getWishlist();
   }, function () {
     toastr.error("Failed to remove item.");
   });
