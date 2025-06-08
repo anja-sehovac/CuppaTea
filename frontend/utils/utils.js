@@ -83,6 +83,9 @@ const Utils = {
           onReady: function () {
             UserService.updateDashboardLinkBasedOnRole();
             ProductService.handleNavbarSearch();
+            ProductService.renderDashboardProducts();
+            ProductService.loadUserProductViews();
+            ProductService.loadDashboardSummary(); 
           }
         });
 
