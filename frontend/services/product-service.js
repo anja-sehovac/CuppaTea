@@ -144,7 +144,7 @@ if (data.images && data.images.length > 0) {
     imageWrapper.classList.add("position-relative");
 
     const imageElement = document.createElement("img");
-    imageElement.src = 'backend/' + img.image;
+    imageElement.src = '../backend' + img.image;
     imageElement.classList.add("img-thumbnail");
     imageElement.style.height = "100px";
 
@@ -347,8 +347,8 @@ loadProducts: function (filters = {}) {
 
         // Get the first image URL or fallback
         const imageUrl = (product.images && product.images.length > 0)
-          ? 'backend/' + product.images[0].image // assuming image paths start with `/uploads/...`
-          : 'frontend/assets/images/earl_grey_tea.jpg'; // your default placeholder image
+          ? '../backend/' + product.images[0].image // assuming image paths start with `/uploads/...`
+          : 'assets/images/earl_grey_tea.jpg'; // your default placeholder image
 
           container.innerHTML += `
             <div class="col-lg-4 col-md-6 mb-4">
@@ -395,14 +395,14 @@ renderCategoryCheckboxes: function () {
       // Set main image
       const mainImage = document.getElementById('mainImage');
       mainImage.src = (product.images && product.images.length > 0)
-        ? 'backend' + product.images[0].image
-        : 'frontend/assets/images/cherry_blossom_tea.jpg';
+        ? '../backend' + product.images[0].image
+        : 'assets/images/cherry_blossom_tea.jpg';
 
       // Set thumbnails
       const thumbnailRow = document.querySelector('.thumbnail-row .d-flex');
       thumbnailRow.innerHTML = '';
       (product.images && product.images.length > 0 ? product.images : []).forEach((img, i) => {
-        const imgSrc = 'backend' + img.image;
+        const imgSrc = '../backend' + img.image;
         thumbnailRow.innerHTML += `
           <img src="${imgSrc}" alt="Thumbnail ${i+1}" class="thumbnail rounded ${i === 0 ? 'active' : ''}"
                onclick="changeImage(event, this.src)" style="width: 32%; height: 120px; object-fit: cover; cursor: pointer;">
@@ -443,8 +443,8 @@ if (productTitle) productTitle.textContent = product.name;
 
       matchingProducts.forEach(p => {
         const imageUrl = (p.images && p.images.length > 0)
-          ? 'backend' + p.images[0].image
-          : 'frontend/assets/images/earl_grey_tea.jpg';
+          ? '../backend' + p.images[0].image
+          : 'assets/images/earl_grey_tea.jpg';
 
         recContainer.innerHTML += `
           <div class="col-md-4 col-lg-3 mb-4">
@@ -513,8 +513,8 @@ renderDashboardProducts: function(containerSelector = '#dashboard-products-row')
 
     products.slice(0, 3).forEach(product => {
       const imageUrl = (product.images && product.images.length > 0)
-        ? 'backend/' + product.images[0].image
-        : 'frontend/assets/images/earl_grey_tea.jpg';
+        ? '../backend' + product.images[0].image
+        : 'assets/images/earl_grey_tea.jpg';
 
       row.innerHTML += `
         <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
