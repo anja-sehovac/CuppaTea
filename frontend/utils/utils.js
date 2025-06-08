@@ -2,7 +2,7 @@ const Utils = {
     init_spapp: function () {
         var app = $.spapp({
             defaultView: "#dashboard",
-            templateDir: "./../../../web_project/frontend/views/"
+            templateDir: "./../frontend/views/"
 
         });
 
