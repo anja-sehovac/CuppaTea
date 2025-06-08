@@ -176,3 +176,9 @@
 });
 
 </script>
+<script>
+  // Unblock UI whenever the edit modal is hidden (closed)
+  $('#edit_modal').on('hidden.bs.modal', function () {
+    Utils.unblock_ui("#profile");
+  });
+</script>
