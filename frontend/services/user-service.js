@@ -167,7 +167,7 @@ var UserService = {
         // Update Profile Picture (Use default if null)
         let profileImg = document.querySelector("#profile img");
         profileImg.src = response.image
-    ? "../backend" + response.image
+    ? Constants.get_api_base_url() + response.image
     : "assets/images/ava3.webp";
   
         // Update Profile Information in the card
