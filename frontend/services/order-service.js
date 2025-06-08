@@ -183,7 +183,7 @@ clearCart() {
 
   RestClient.delete("cart/clear", {},
     function (response) {
-      // Backend success → now clear frontend/cart UI
+      // Backend success → now clear cart UI
       localStorage.removeItem("cart");
       document.getElementById("cartItems").innerHTML = "";
       document.getElementById("cartItemCount").innerText = "0 items";

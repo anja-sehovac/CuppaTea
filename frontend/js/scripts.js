@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let profileImg = document.querySelector("#profile img");
         profileImg.src = response.image
     ? "http://localhost/web_project/backend" + response.image
-    : "frontend/assets/images/ava3.webp";
+    : "assets/images/ava3.webp";
   
         // Update Profile Information in the card
         document.querySelector("#profile h5").textContent = response.name || "N/A";

@@ -22,8 +22,10 @@ var WishlistService = {
 
     items.forEach(item => {
       const imageUrl = (item.images && item.images.length > 0)
-        ? 'backend/' + item.images[0].image
-        : 'frontend/assets/images/earl_grey_tea.jpg';
+
+        ? '../backend' + item.images[0].image
+        : 'assets/images/earl_grey_tea.jpg';
+
 
       const html = `
       <div class="col-12 mb-3">
